@@ -18,12 +18,12 @@ void main() async {
 
     test('Get Refresh Token Pair', () async {
       await tokenService.start();
-      expect(tokenService.getRefreshToken(id: 'uuid'), isNotNull);
+      expect(tokenService.getRefreshToken('uuid'), isNotNull);
     });
 
     test('Remove Token Pair', () async {
       await tokenService.start();
-      expect(tokenService.removeRefreshToken(id: 'uuid'), isNotNull);
+      expect(tokenService.removeRefreshToken('uuid'), isNotNull);
     });
   });
 }

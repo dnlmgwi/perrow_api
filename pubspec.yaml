@@ -11,6 +11,7 @@ dependencies:
   calc: ^0.2.1
   crypto: ^3.0.1
   dart_jsonwebtoken: ^2.1.0
+  dart_ping: ^6.0.0
   dotenv: ^3.0.0
   geodesy: ^0.4.0-nullsafety.0
   hex: ^0.2.0
@@ -20,7 +21,6 @@ dependencies:
   postgrest: ^0.1.0
   realtime_client: ^0.0.8
   redis_dart: ^0.1.0+4
-  sentry: ^5.0.0
   shelf_router: ^1.0.0
   supabase: ^0.0.1-dev.14
   throttling: ^1.0.0

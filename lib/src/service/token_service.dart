@@ -10,7 +10,7 @@ class TokenService {
   final String _prefix = 'token';
   final refreshTokenExpiry = Duration(
     days: 2,
-  ); //TODO: is 2 Days is best practice?
+  ); //TODO: 2 Days is best practice? Add To Env
 
   Future<void> start() async {
     try {
@@ -69,11 +69,11 @@ class TokenService {
     );
   }
 
-  Future<dynamic> getRefreshToken({required String id}) async {
+  Future<dynamic> getRefreshToken(String? id) async {
     return await client.get('$_prefix: $id');
   }
 
-  Future<void> removeRefreshToken({required String id}) async {
+  Future<void> removeRefreshToken(String? id) async {
     await client.expireAt(
         '$_prefix: $id', DateTime.now()); //TODO Token Not Being Removed?
   }
