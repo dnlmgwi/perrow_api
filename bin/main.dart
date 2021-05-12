@@ -60,7 +60,7 @@ void main(List<String> args) async {
       .addHandler(app);
 
   app.mount(
-    'api/v1/',
+    '/api/v1/',
     StatusApi().router,
   );
 
@@ -70,7 +70,7 @@ void main(List<String> args) async {
   // );
 
   // app.mount(
-  //   '/v1/sync/',
+  //   'api/v1/sync/',
   //   OfflineSyncApi(
   //     offlineScans: offlineScans,
   //     offlineTransactions: offlineTransactions,
