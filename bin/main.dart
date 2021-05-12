@@ -1,34 +1,109 @@
 import 'dart:io';
-
-import 'package:args/args.dart';
-import 'package:shelf/shelf.dart' as shelf;
-import 'package:shelf/shelf_io.dart' as io;
-
-// For Google Cloud Run, set _hostname to '0.0.0.0'.
-const _hostname = '0.0.0.0';
+import 'package:dotenv/dotenv.dart';
+import 'package:hive/hive.dart';
+import 'package:perrow_api/src/api/status/status_api.dart';
+import 'package:perrow_api/src/config.dart';
+import 'package:perrow_api/src/model/models/hive/0.transactionRecord/transactionRecord.dart';
+import 'package:perrow_api/src/model/models/hive/1.rechargeNotification/rechargeNotification.dart';
+import 'package:perrow_api/src/service/token_service.dart';
+import 'package:perrow_api/src/utils.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 
 void main(List<String> args) async {
-  var parser = ArgParser()..addOption('port', abbr: 'p');
-  var result = parser.parse(args);
+  ///Load Env Variables
+  load();
 
-  // For Google Cloud Run, we respect the PORT environment variable
-  var portStr = result['port'] ?? Platform.environment['PORT'] ?? '8080';
-  var port = int.tryParse(portStr);
+  Hive.init('./storage');
+  Hive.registerAdapter(TransactionRecordAdapter());
+  Hive.registerAdapter(RechargeNotificationAdapter());
+  await Hive.openBox<TransactionRecord>('transactions');
+  await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
-  if (port == null) {
-    stdout.writeln('Could not parse port value "$portStr" into a number.');
-    // 64: command line usage error
-    exitCode = 64;
-    return;
-  }
+  /// Start Redis Token Service
+  final tokenService = TokenService();
+  await tokenService.start();
 
-  var handler = const shelf.Pipeline()
-      .addMiddleware(shelf.logRequests())
-      .addHandler(_echoRequest);
+  // final accountService = AccountService();
 
-  var server = await io.serve(handler, _hostname, port);
+  // final walletService = WalletService(accountService: accountService);
+
+  // final authService = AuthService();
+
+  // final blockchainService = BlockchainService(
+  //   walletService: walletService,
+  // );
+
+  // final miner = MineServices(
+  //   blockchain: blockchainService,
+  // );
+
+  // final automatedTasks = AutomatedTasks(
+  //   miner: miner,
+  //   walletService: walletService,
+  // );
+  // final statsService = StatisticsService();
+
+  //Automated Tasks
+  // unawaited(automatedTasks.startAutomatedTasks());
+
+  /// Shelf Router
+  var app = Router();
+
+  var handler = Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(handleCors())
+      .addMiddleware(handleAuth(
+        secret: Env.secret!,
+      ))
+      .addHandler(app);
+
+  app.mount(
+    'api/v1/',
+    StatusApi().router,
+  );
+
+  // app.mount(
+  //   'api/v1/stats/',
+  //   StatsApi(statsService: statsService).router,
+  // );
+
+  // app.mount(
+  //   '/v1/sync/',
+  //   OfflineSyncApi(
+  //     offlineScans: offlineScans,
+  //     offlineTransactions: offlineTransactions,
+  //   ).router,
+  // );
+
+  // app.mount(
+  //   'api/v1/auth/',
+  //   AuthApi(
+  //     secret: Env.secret!,
+  //     tokenService: tokenService,
+  //   ).router,
+  // );
+
+  // app.mount(
+  //   'api/v1/blockchain/',
+  //   BlockChainApi(
+  //     blockchainService: blockchainService,
+  //   ).router,
+  // );
+
+  // app.mount(
+  //   'api/v1/account/',
+  //   AccountApi(
+  //     authService: authService,
+  //     walletService: walletService,
+  //   ).router,
+  // );
+
+  var portEnv = Platform.environment['PORT'];
+  var port = portEnv == null ? 9999 : int.parse(portEnv);
+
+  var server = await shelf_io.serve(handler, '0.0.0.0', port);
+  server.autoCompress;
   print('Serving at http://${server.address.host}:${server.port}');
 }
-
-shelf.Response _echoRequest(shelf.Request request) =>
-    shelf.Response.ok('Request for "${request.url}"');
