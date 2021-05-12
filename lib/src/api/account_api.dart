@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:perrow_api/src/model/models/api/blockchain/transferRequest.dart';
+import 'package:perrow_api/src/model/api/blockchain/transferRequest.dart';
 import 'package:perrow_api/src/service/AuthService.dart';
 import 'package:perrow_api/src/service/accountService.dart';
 import 'package:perrow_api/src/service/walletServices.dart';
@@ -13,12 +13,12 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:validators/validators.dart';
 
-class AccountApi {
+class UserApi {
   AuthService authService;
 
   WalletService walletService;
 
-  AccountApi({
+  UserApi({
     required this.authService,
     required this.walletService,
   });
@@ -30,7 +30,7 @@ class AccountApi {
     final _accountService = AccountService();
 
     router.get(
-      '/user',
+      '/account',
       ((
         Request request,
       ) async {
@@ -65,7 +65,7 @@ class AccountApi {
           );
         } catch (e) {
           return Response(
-            HttpStatus.badRequest,
+            HttpStatus.forbidden,
             body: json.encode({
               'data': {'message': e}
             }),
@@ -148,8 +148,9 @@ class AccountApi {
             },
           );
         } catch (e) {
-          return Response.forbidden(
-            json.encode({
+          return Response(
+            HttpStatus.forbidden,
+            body: json.encode({
               'data': {'message': '${e.toString()}'}
             }),
             headers: {

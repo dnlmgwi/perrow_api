@@ -1,4 +1,4 @@
-import 'package:perrow_api/src/model/models/mineResult/mineResult.dart';
+import 'package:perrow_api/src/model/mineResult/mineResult.dart';
 import 'package:perrow_api/src/service/blockchainService.dart';
 import 'package:perrow_api/src/validators/validation/blockchainValidationService.dart';
 

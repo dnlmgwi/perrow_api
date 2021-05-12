@@ -4,8 +4,8 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:hex/hex.dart';
 
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/models/block/block.dart';
-import 'package:perrow_api/src/model/models/hive/0.transactionRecord/transactionRecord.dart';
+import 'package:perrow_api/src/model/block/block.dart';
+import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
 import 'package:perrow_api/src/service/databaseService.dart';
 import 'package:perrow_api/src/service/walletServices.dart';
 import 'package:postgrest/postgrest.dart';

@@ -1,6 +1,6 @@
 import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/account/account.dart';
-import 'package:perrow_api/src/model/models/tokenPair/tokenPair.dart';
+import 'package:perrow_api/src/model/api/auth/user/account/account.dart';
+import 'package:perrow_api/src/model/tokenPair/tokenPair.dart';
 import 'package:perrow_api/src/service/token_service.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/validation/AuthValidationService.dart';

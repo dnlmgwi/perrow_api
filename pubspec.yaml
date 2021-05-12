@@ -1,7 +1,7 @@
 name: perrow_api
 description: A web server built using the shelf package.
 version: 0.0.1
-homepage: https://linkedin.com/in/danielmgawi/
+# homepage: https://linkedin.com/in/danielmgawi/
 
 environment:
   sdk: ">=2.12.2 <3.0.0"
@@ -21,6 +21,7 @@ dependencies:
   postgrest: ^0.1.0
   realtime_client: ^0.0.8
   redis_dart: ^0.1.0+4
+  shelf: ^1.1.2
   shelf_router: ^1.0.0
   supabase: ^0.0.1-dev.14
   throttling: ^1.0.0

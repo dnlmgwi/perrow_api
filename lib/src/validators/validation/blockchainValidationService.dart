@@ -1,4 +1,4 @@
-import 'package:perrow_api/src/model/models/block/block.dart';
+import 'package:perrow_api/src/model/block/block.dart';
 import 'package:perrow_api/src/service/blockchainService.dart';
 
 class BlockChainValidationService {

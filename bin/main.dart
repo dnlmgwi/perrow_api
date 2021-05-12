@@ -7,8 +7,8 @@ import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/blockchain_api.dart';
 import 'package:perrow_api/src/api/status_api.dart';
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/models/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/model/models/hive/1.rechargeNotification/rechargeNotification.dart';
+import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
+import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
 import 'package:perrow_api/src/service/AuthService.dart';
 import 'package:perrow_api/src/service/accountService.dart';
 import 'package:perrow_api/src/service/automatedTasks.dart';
@@ -18,8 +18,8 @@ import 'package:perrow_api/src/service/token_service.dart';
 import 'package:perrow_api/src/service/walletServices.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 
 void main(List<String> args) async {
   ///Load Env Variables
@@ -71,8 +71,31 @@ void main(List<String> args) async {
       .addHandler(app);
 
   app.mount(
-    '/api/v1/',
+    '/v1/info/',
     StatusApi().router,
+  );
+
+  app.mount(
+    '/v1/auth/',
+    AuthApi(
+      secret: Env.secret!,
+      tokenService: tokenService,
+    ).router,
+  );
+
+  app.mount(
+    '/v1/blockchain/',
+    BlockChainApi(
+      blockchainService: blockchainService,
+    ).router,
+  );
+
+  app.mount(
+    '/v1/user/',
+    UserApi(
+      authService: authService,
+      walletService: walletService,
+    ).router,
   );
 
   // app.mount(
@@ -88,33 +111,10 @@ void main(List<String> args) async {
   //   ).router,
   // );
 
-  app.mount(
-    '/api/v1/auth/',
-    AuthApi(
-      secret: Env.secret!,
-      tokenService: tokenService,
-    ).router,
-  );
-
-  app.mount(
-    '/api/v1/blockchain/',
-    BlockChainApi(
-      blockchainService: blockchainService,
-    ).router,
-  );
-
-  app.mount(
-    '/api/v1/account/',
-    AccountApi(
-      authService: authService,
-      walletService: walletService,
-    ).router,
-  );
-
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
   var server = await shelf_io.serve(handler, '0.0.0.0', port);
-  server.autoCompress;
+
   print('Serving at http://${server.address.host}:${server.port}');
 }

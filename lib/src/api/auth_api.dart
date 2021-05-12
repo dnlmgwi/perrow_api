@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:perrow_api/src/errors/authExceptions.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/register/registerRequest.dart';
+import 'package:perrow_api/src/model/api/auth/user/register/registerRequest.dart';
 import 'package:perrow_api/src/service/AuthService.dart';
 import 'package:perrow_api/src/service/token_service.dart';
 import 'package:perrow_api/src/utils.dart';
@@ -117,7 +117,7 @@ class AuthApi {
           );
         } catch (e) {
           return Response(
-            HttpStatus.badRequest,
+            HttpStatus.forbidden,
             body: json.encode({
               'data': {'message': e.toString()}
             }),
@@ -245,7 +245,7 @@ class AuthApi {
       );
     });
 
-    router.post('/refreshToken', (Request req) async {
+    router.post('/refresh', (Request req) async {
       final payload = await req.readAsString();
       final payloadMap;
       final JWT token;

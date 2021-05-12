@@ -1,10 +1,10 @@
 import 'package:hive/hive.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/transaction/transAccount.dart';
-import 'package:perrow_api/src/model/models/block/block.dart';
-import 'package:perrow_api/src/model/models/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/model/models/hive/1.rechargeNotification/rechargeNotification.dart';
+import 'package:perrow_api/src/model/api/auth/user/transaction/transAccount.dart';
+import 'package:perrow_api/src/model/block/block.dart';
+import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
+import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
 import 'package:perrow_api/src/service/accountService.dart';
 import 'package:perrow_api/src/service/databaseService.dart';
 

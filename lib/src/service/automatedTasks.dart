@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:perrow_api/src/service/mineService.dart';
 import 'package:throttling/throttling.dart';
-import 'package:perrow_api/src/model/models/hive/1.rechargeNotification/rechargeNotification.dart';
+import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
 import 'package:perrow_api/src/service/databaseService.dart';
 import 'package:perrow_api/src/service/walletServices.dart';
 

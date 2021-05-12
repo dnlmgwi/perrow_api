@@ -1,7 +1,5 @@
 import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/transaction/transAccount.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/transaction/transAccount.dart';
+import 'package:perrow_api/src/model/api/auth/user/transaction/transAccount.dart';
 import 'package:perrow_api/src/service/databaseService.dart';
 
 class AccountService {

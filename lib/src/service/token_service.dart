@@ -1,5 +1,5 @@
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/models/tokenPair/tokenPair.dart';
+import 'package:perrow_api/src/model/tokenPair/tokenPair.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:redis_dart/redis_dart.dart';
 import 'package:uuid/uuid.dart';

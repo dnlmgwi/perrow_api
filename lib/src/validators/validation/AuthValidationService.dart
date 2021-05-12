@@ -1,6 +1,6 @@
 import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/src/errors/authExceptions.dart';
-import 'package:perrow_api/src/model/models/api/auth/user/account/account.dart';
+import 'package:perrow_api/src/model/api/auth/user/account/account.dart';
 import 'package:perrow_api/src/service/databaseService.dart';
 import 'package:postgrest/postgrest.dart';
 
