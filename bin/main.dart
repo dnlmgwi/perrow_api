@@ -1,6 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
+import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
   /// Load Env Variables
@@ -14,7 +15,12 @@ void main(List<String> args) async {
   await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
   /// Start Token Service
-  await tokenService.start();
+  try {
+    await tokenService.start();
+  } catch (e, stacktrace) {
+    //todo Notify Service is down
+    print(e);
+  }
 
   /// Automated Tasks
   /// Unwaited future as it continously
@@ -25,6 +31,8 @@ void main(List<String> args) async {
 
   var handler = Pipeline()
       .addMiddleware(logRequests())
+      .addMiddleware(cookieParser(Env.cookieKey!))
+      // .addMiddleware(handleSession())
       .addMiddleware(handleCors())
       .addMiddleware(handleAuth(
         secret: Env.secret!,
@@ -76,7 +84,11 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
-  var server = await serve(handler, '127.0.0.1', port);
+  var server = await serve(
+    handler,
+    '127.0.0.1',
+    port,
+  );
 
   print('Serving at http://${server.address.host}:${server.port}');
 }

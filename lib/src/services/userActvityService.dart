@@ -3,7 +3,7 @@ import 'package:geodesy/geodesy.dart';
 class UserActivityService {
   Geodesy geodesy = Geodesy();
 
-  Map walkingActivity(
+  Map movementActivity(
     double startLat,
     double startLng,
     double endLat,

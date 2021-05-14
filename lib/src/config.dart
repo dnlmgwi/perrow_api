@@ -2,12 +2,13 @@ import 'package:dotenv/dotenv.dart';
 
 class Env {
   /// Server Side
+  /// DO NOT TOUCH
   static final hostName = '0.0.0.0';
-
-  ///DO NOT TOUCH
 
   ///Crash Analytics
   static final sentry = env['SENTRY'];
+
+  static final cookieKey = env['COOKIE_KEY'];
 
   /// API System Address
   static final systemAddress = env['SYSTEM_ADDRESS'];

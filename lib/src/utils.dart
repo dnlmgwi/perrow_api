@@ -1,11 +1,16 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
+// import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 Middleware handleCors() {
-  const corsHeaders = {'Access-Control-Allow-Origin': '*'};
+  var corsHeaders = {
+    'Access-Control-Allow-Origins': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+    'Access-Control-Allow-Headers': 'Origin, Content-Type',
+  };
 
   return createMiddleware(requestHandler: (Request request) {
-    if (request.method == 'OPTIONS') {
+    if (request.method.toLowerCase() == 'options') {
       return Response.ok('', headers: corsHeaders);
     }
     return null;
@@ -90,6 +95,30 @@ Middleware handleAuth({required String secret}) {
     };
   };
 }
+
+// Middleware handleSession() {
+//   return (Handler innerhandler) => (Request request) async {
+//         var cookies = request.context['cookies'] as CookieParser;
+
+//         if (cookies.get('ping') == null) {
+//           //secure: true - means send it via https only
+//           cookies.clear();
+//           try {
+//             await cookies.setEncrypted('pong', 'bar',
+//                 secure: true, httpOnly: true);
+//           } catch (e) {
+//             print('Handler Cookie Error: ${e.toString()}');
+//             //Todo Notify Auth Error
+//           }
+//         }
+
+//         final updateRequest = request.change(context: {
+//           HttpHeaders.setCookieHeader: cookies.toHeader(),
+//         });
+
+//         return innerhandler(updateRequest);
+//       };
+// }
 
 Middleware checkAuth() {
   return createMiddleware(requestHandler: (Request request) {
