@@ -1,49 +1,55 @@
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+// import 'package:mailer/mailer.dart';
+// // import 'package:mailer/smtp_server.dart';
 
-main() async {
-  String username = 'pdmgawi@gmail.com';
-  String password = 'Yk5ynI9XJRhwdWDm';
+// void main() async {
+//   var username = 'pdmgawi@gmail.com';
+//   var password = 'Yk5ynI9XJRhwdWDm';
 
-  final smtpServer = SmtpServer(
-    'smtp-relay.sendinblue.com',
-    password: password,
-    username: username,
-  );
-  // Use the SmtpServer class to configure an SMTP server:
-  // final smtpServer = SmtpServer('smtp.domain.com');
-  // See the named arguments of SmtpServer for further configuration
-  // options.
+//   // final smtpServer = SmtpServer(
+//   //   'smtp-relay.sendinblue.com',
+//   //   password: password,
+//   //   username: username,
+//   //   allowInsecure: ,
+//   //   ignoreBadCertificate: ,
+//   //   name: ,
+//   //   port: ,
+//   //   ssl: false
+//   // );
 
-  // Create our message.
-  final message = Message()
-    ..from = Address(username, 'Your name')
-    ..recipients.add('destination@example.com')
-    ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-    ..bccRecipients.add(Address('bccAddress@example.com'))
-    ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
-    ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-    ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
+//   // Use the SmtpServer class to configure an SMTP server:
+//   // final smtpServer = SmtpServer('smtp.domain.com');
+//   // See the named arguments of SmtpServer for further configuration
+//   // options.
 
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } on MailerException catch (e) {
-    print('Message not sent.');
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
-    }
-  }
-  // DONE
+//   // Create our message.
+//   final message = Message()
+//     ..from = Address(username, 'Your name')
+//     ..recipients.add('destination@example.com')
+//     ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+//     ..bccRecipients.add(Address('bccAddress@example.com'))
+//     ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
+//     ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+//     ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
 
-  // Sending multiple messages with the same connection
-  //
-  // Create a smtp client that will persist the connection
-  var connection = PersistentConnection(smtpServer);
+//   try {
+//     final sendReport = await send(message, smtpServer);
+//     print('Message sent: ' + sendReport.toString());
+//   } on MailerException catch (e) {
+//     print('Message not sent.');
+//     for (var p in e.problems) {
+//       print('Problem: ${p.code}: ${p.msg}');
+//     }
+//   }
+//   // DONE
 
-  // Send the first message
-  await connection.send(message);
+//   // Sending multiple messages with the same connection
+//   //
+//   // Create a smtp client that will persist the connection
+//   var connection = PersistentConnection(smtpServer);
 
-  // close the connection
-  await connection.close();
-}
+//   // Send the first message
+//   await connection.send(message);
+
+//   // close the connection
+//   await connection.close();
+// }

@@ -1,19 +1,21 @@
+import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:hive/hive.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/model/api/auth/user/transaction/transAccount.dart';
-import 'package:perrow_api/src/model/block/block.dart';
-import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/services/services_packages.dart';
+
+import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/validators/enumValues.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:uuid/uuid.dart';
 
 class WalletService {
   AccountService accountService;
+  NotificationService notificationService;
 
-  WalletService({required this.accountService});
+  WalletService({
+    required this.accountService,
+    required this.notificationService,
+  });
 
   var pendingTransactions = Hive.box<TransactionRecord>('transactions');
   var pendingDepositsTansactions =
@@ -49,13 +51,13 @@ class WalletService {
                   blockId: id,
                 ).toJson()) //TODO on Error Return Account to Normal
                 .execute()
-                .then((value) async {
-              if (value.error != null) {
-                throw Exception(value.error!.message);
-              } //TODO Notify Users
-
-              print('Processed Transactions: ${value.data}');
+                .then((response) async {
+              if (response.error != null) {
+                throw Exception(response.error!.message);
+              }
+              // await notificationService.sendNotification(transaction, response); //TODO Enable Only When in Development Env.
             }).whenComplete(
+              //Every Transaction is Proccessed and Removed from the List
               () => transaction.delete(),
             );
           } catch (exception, stackTrace) {
@@ -302,14 +304,17 @@ class WalletService {
       //Prevents User from Sending Points To Self Compounding Account Balance.
       throw SelfTransferException();
     }
-
+    //Check if the sender & recipient are in the system
     if (await recipientValidation(recipientid)) {
-      //Check if the sender & recipient are in the system
-      await checkAccountBalance(
-          value: amount,
-          account: await accountService.findAccountDetails(
-            id: senderid!,
-          ));
+      try {
+        await checkAccountBalance(
+            value: amount,
+            account: await accountService.findAccountDetails(
+              id: senderid!,
+            ));
+      } catch (exeption, stacktrace) {
+        rethrow; //TODO Handle Error
+      }
 
       if (await accountStatusCheck(
         senderid,

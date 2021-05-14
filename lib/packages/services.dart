@@ -7,3 +7,5 @@ export 'package:perrow_api/src/services/token_service.dart';
 export 'package:perrow_api/src/services/walletServices.dart';
 export 'package:perrow_api/src/services/blockchainService.dart';
 export 'package:perrow_api/src/services/databaseService.dart';
+export 'package:perrow_api/src/services/notificationService.dart';
+export 'package:perrow_api/src/services/api_services.dart';

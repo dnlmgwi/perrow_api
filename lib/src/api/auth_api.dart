@@ -1,15 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/src/errors/authExceptions.dart';
-import 'package:perrow_api/src/model/api/auth/user/login/loginRequest.dart';
-import 'package:perrow_api/src/model/api/auth/user/register/registerRequest.dart';
-import 'package:perrow_api/src/services/services_packages.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf_router/shelf_router.dart';
 
 class AuthApi {
   String secret;

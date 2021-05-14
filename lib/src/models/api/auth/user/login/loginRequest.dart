@@ -8,7 +8,7 @@ part 'loginRequest.g.dart';
 class LoginRequest {
   late final String? id;
   late final String? pin;
-  // late final String? phoneNumber; //TODO Login with PhoneNumber
+  // late final String? phoneNumber; //TODO Login with PhoneNumber aswell
 
   LoginRequest({
     required this.id,

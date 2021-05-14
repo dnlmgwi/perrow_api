@@ -1,30 +1,19 @@
-import 'dart:io';
-import 'package:dotenv/dotenv.dart';
-import 'package:hive/hive.dart';
-import 'package:pedantic/pedantic.dart';
-import 'package:perrow_api/src/api/account_api.dart';
-import 'package:perrow_api/src/api/auth_api.dart';
-import 'package:perrow_api/src/api/blockchain_api.dart';
-import 'package:perrow_api/src/api/status_api.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/services/api_services.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:shelf_router/shelf_router.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 
 void main(List<String> args) async {
-  ///Load Env Variables
+  /// Load Env Variables
   load();
+
+  /// Load Internal Stores
   Hive.init('./storage');
   Hive.registerAdapter(TransactionRecordAdapter());
   Hive.registerAdapter(RechargeNotificationAdapter());
   await Hive.openBox<TransactionRecord>('transactions');
   await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
-  ///
+  /// Start Token Service
   await tokenService.start();
 
   /// Automated Tasks
@@ -87,7 +76,7 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
-  var server = await shelf_io.serve(handler, '127.0.0.1', port);
+  var server = await serve(handler, '127.0.0.1', port);
 
   print('Serving at http://${server.address.host}:${server.port}');
 }

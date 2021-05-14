@@ -1,8 +1,4 @@
-import 'dart:async';
-
-import 'package:perrow_api/src/services/services_packages.dart';
-import 'package:throttling/throttling.dart';
-import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 
 class AutomatedTasks {
   WalletService walletService;
@@ -13,7 +9,7 @@ class AutomatedTasks {
     required this.walletService,
   });
 
-  /// Use Websockets Done! Listerning to Internal Stream
+  /// Listerning to Internal Hive for Changes
   Future<void> startAutomatedTasks() async {
     var transStream = walletService.pendingTransactions.watch();
     var depositStream = walletService.pendingDepositsTansactions.watch();
@@ -40,6 +36,7 @@ class AutomatedTasks {
     print('payments?');
     try {
       await blockchainService.mine();
+      print('Processing Payments');
     } catch (exception, stackTrace) {
       // await Sentry.captureException(
       //   exception,

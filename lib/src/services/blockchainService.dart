@@ -1,12 +1,10 @@
-import 'dart:convert';
-
+import 'package:perrow_api/packages/core.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:hex/hex.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/block/block.dart';
-import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/services/services_packages.dart';
+import 'package:perrow_api/packages/services.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:uuid/uuid.dart';
 
@@ -44,10 +42,13 @@ class BlockchainService {
     }
 
     try {
-      var blockTransactions =
-          List.of(walletService.pendingTransactions.values.toList());
-
       var id = Uuid().v4();
+
+      var blockTransactions = List.of(walletService.pendingTransactions.values);
+
+      for (var transaction in blockTransactions) {
+        transaction.blockId = id;
+      }
 
       await walletService
           .processPayments(prevBlock, id)

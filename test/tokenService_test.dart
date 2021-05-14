@@ -1,5 +1,5 @@
 import 'package:dotenv/dotenv.dart';
-import 'package:perrow_api/src/services/services_packages.dart';
+import 'package:perrow_api/packages/services.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 

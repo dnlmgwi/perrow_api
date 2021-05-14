@@ -1,13 +1,17 @@
-import 'package:perrow_api/src/services/services_packages.dart';
+
+
+import 'package:perrow_api/packages/perrow_api.dart';
 
 /// Start Redis Token Service
 final tokenService = TokenService();
+final notificationService = NotificationService();
 
 /// User Account managments
 final accountService = AccountService();
 
 /// User Wallet Service
-final walletService = WalletService(accountService: accountService);
+final walletService = WalletService(
+    accountService: accountService, notificationService: notificationService);
 
 /// User Authentication Service
 /// Login

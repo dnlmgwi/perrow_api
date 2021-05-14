@@ -14,7 +14,7 @@ class InvalidPinException implements Exception {
 }
 
 class InvalidPhoneNumberException implements Exception {
-  ///This Exception is thrown when there is an invalid Input Entered in the DB
+  /// This Exception is thrown when there is an invalid Input Entered in the DB
   late String _message;
 
   InvalidPhoneNumberException(
