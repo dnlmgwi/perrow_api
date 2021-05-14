@@ -1,6 +1,6 @@
 import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/src/model/api/auth/user/transaction/transAccount.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
+import 'package:perrow_api/src/services/services_packages.dart';
 
 class AccountService {
   Future<TransAccount> findAccountDetails({required String id}) async {

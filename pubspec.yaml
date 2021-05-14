@@ -9,10 +9,13 @@ environment:
 dependencies:
   args: ^2.1.0
   calc: ^0.2.1
-  crypto: ^3.0.1
+  # crypto: ^3.0.1
+  mailer: ^5.0.0
+  dart_date: ^1.1.0
   dart_jsonwebtoken: ^2.1.0
   dart_ping: ^6.0.0
   dotenv: ^3.0.0
+  enum_to_string: ^2.0.1
   geodesy: ^0.4.0-nullsafety.0
   hex: ^0.2.0
   hive_generator: ^1.0.1
@@ -21,11 +24,11 @@ dependencies:
   postgrest: ^0.1.0
   realtime_client: ^0.0.8
   redis_dart: ^0.1.0+4
-  shelf: ^1.1.2
   shelf_router: ^1.0.0
+  shelf: ^1.1.2
   supabase: ^0.0.1-dev.14
   throttling: ^1.0.0
-  timeago: ^3.0.2
+  time: ^2.0.0
   uuid: ^3.0.3
   validators: ^3.0.0
 

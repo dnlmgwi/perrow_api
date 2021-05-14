@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'package:perrow_api/src/service/mineService.dart';
+
+import 'package:perrow_api/src/services/services_packages.dart';
 import 'package:throttling/throttling.dart';
 import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
-import 'package:perrow_api/src/service/walletServices.dart';
 
 class AutomatedTasks {
   WalletService walletService;
-  MineServices miner;
+  BlockchainService blockchainService;
 
   AutomatedTasks({
-    required this.miner,
+    required this.blockchainService,
     required this.walletService,
   });
 
@@ -40,7 +39,7 @@ class AutomatedTasks {
   Future<void> _processPendingPayments() async {
     print('payments?');
     try {
-      await miner.mine();
+      await blockchainService.mine();
     } catch (exception, stackTrace) {
       // await Sentry.captureException(
       //   exception,

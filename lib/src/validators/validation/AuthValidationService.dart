@@ -1,16 +1,18 @@
 import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/src/errors/authExceptions.dart';
 import 'package:perrow_api/src/model/api/auth/user/account/account.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
+import 'package:perrow_api/src/services/services_packages.dart';
+
 import 'package:postgrest/postgrest.dart';
 
 class AuthValidationService {
-  static Future<Account> findAccount({required String id}) async {
-    var response = await DatabaseService.client
+  static Future<Account> fetchUserAccountDetails(
+      {String? id, String? phoneNumber}) async {
+    var response = await DatabaseService.client //TODO Login with ID/PhoneNumber
         .from('beneficiary_accounts')
         .select()
         .match({
-          'id': id,
+          'id': id ?? phoneNumber,
         })
         .execute()
         .onError(

@@ -9,13 +9,7 @@ import 'package:perrow_api/src/api/status_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
 import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/service/AuthService.dart';
-import 'package:perrow_api/src/service/accountService.dart';
-import 'package:perrow_api/src/service/automatedTasks.dart';
-import 'package:perrow_api/src/service/blockchainService.dart';
-import 'package:perrow_api/src/service/mineService.dart';
-import 'package:perrow_api/src/service/token_service.dart';
-import 'package:perrow_api/src/service/walletServices.dart';
+import 'package:perrow_api/src/services/api_services.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
@@ -24,39 +18,17 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 void main(List<String> args) async {
   ///Load Env Variables
   load();
-
   Hive.init('./storage');
   Hive.registerAdapter(TransactionRecordAdapter());
   Hive.registerAdapter(RechargeNotificationAdapter());
   await Hive.openBox<TransactionRecord>('transactions');
   await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
-  /// Start Redis Token Service
-  final tokenService = TokenService();
+  ///
   await tokenService.start();
 
-  final accountService = AccountService();
-
-  final walletService = WalletService(accountService: accountService);
-
-  final authService = AuthService();
-
-  final blockchainService = BlockchainService(
-    walletService: walletService,
-  );
-
-  final miner = MineServices(
-    blockchain: blockchainService,
-  );
-
-  final automatedTasks = AutomatedTasks(
-    miner: miner,
-    walletService: walletService,
-  );
-
-  // final statsService = StatisticsService();
-
-  //Automated Tasks
+  /// Automated Tasks
+  /// Unwaited future as it continously
   unawaited(automatedTasks.startAutomatedTasks());
 
   /// Shelf Router
@@ -80,6 +52,7 @@ void main(List<String> args) async {
     AuthApi(
       secret: Env.secret!,
       tokenService: tokenService,
+      authService: authService,
     ).router,
   );
 
@@ -114,7 +87,7 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
-  var server = await shelf_io.serve(handler, '0.0.0.0', port);
+  var server = await shelf_io.serve(handler, '127.0.0.1', port);
 
   print('Serving at http://${server.address.host}:${server.port}');
 }

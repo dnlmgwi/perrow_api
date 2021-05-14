@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:perrow_api/src/model/api/blockchain/transferRequest.dart';
-import 'package:perrow_api/src/service/AuthService.dart';
-import 'package:perrow_api/src/service/accountService.dart';
-import 'package:perrow_api/src/service/walletServices.dart';
+
+import 'package:perrow_api/src/services/services_packages.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/account_responses.dart';
 import 'package:perrow_api/src/validators/account_validation.dart';
@@ -12,6 +11,23 @@ import 'package:perrow_api/src/validators/validation/AuthValidationService.dart'
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:validators/validators.dart';
+// import 'package:dart_date/dart_date.dart';
+// Account(
+//                         id: user.id,
+//                         age: user.age,
+//                         balance: user.balance,
+//                         gender: user.gender,
+//                         joinedDate: user.joinedDate,
+//                         phoneNumber: user.phoneNumber,
+//                         pin: user.pin,
+//                         salt: user.salt,
+//                         status: user.status,
+//                         lastTrans: user.lastTrans)
+//                     .toJson()
+//                     .addAll({
+//                   'last_trans_text': DateTime.fromMillisecondsSinceEpoch(user.lastTrans!)
+//                       .toHumanString(),
+//                 })
 
 class UserApi {
   AuthService authService;
@@ -36,15 +52,13 @@ class UserApi {
       ) async {
         try {
           final authDetails = request.context['authDetails'] as JWT;
-          final user = await AuthValidationService.findAccount(
+          final user = await AuthValidationService.fetchUserAccountDetails(
             id: authDetails.subject.toString(),
           );
 
           return Response.ok(
             json.encode({
-              'data': {
-                'account': user.toJson(),
-              }
+              'data': {'account': user.toJson()}
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

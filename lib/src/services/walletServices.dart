@@ -5,9 +5,8 @@ import 'package:perrow_api/src/model/api/auth/user/transaction/transAccount.dart
 import 'package:perrow_api/src/model/block/block.dart';
 import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
 import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/service/accountService.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
-
+import 'package:perrow_api/src/services/services_packages.dart';
+import 'package:perrow_api/src/validators/enumValues.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:uuid/uuid.dart';
 
@@ -128,7 +127,7 @@ class WalletService {
       );
 
       /// Edit User Account Balance
-      /// String id - User P23 id
+      /// String id - User Perrow API id
       /// String value - Transaction Value
       /// String transactionType - 0: Withdraw, 1: Deposit
       ///
@@ -336,7 +335,7 @@ class WalletService {
     int amount,
   ) async {
     /// Edit User Account Balance
-    /// String id - User P23 id
+    /// String id - User Perrow API id
     /// String value - Transaction Value
     /// String transactionType - 0: Withdraw, 1: Deposit
     await pendingTransactions.add(TransactionRecord(
@@ -345,7 +344,7 @@ class WalletService {
       amount: amount,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       transId: Uuid().v4(),
-      transType: 1,
+      transType: TransactionType.deposit.index,
     ));
   }
 
@@ -355,7 +354,7 @@ class WalletService {
     int amount,
   ) async {
     /// Edit User Account Balance
-    /// String id - User P23 id
+    /// String id - User Perrow API id
     /// String value - Transaction Value
     /// String transactionType - 0: Withdraw, 1: Deposit
     await pendingTransactions.add(TransactionRecord(
@@ -364,7 +363,7 @@ class WalletService {
       amount: amount,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       transId: Uuid().v4(),
-      transType: 0,
+      transType: TransactionType.withdraw.index,
     ));
   }
 
@@ -381,7 +380,8 @@ class WalletService {
       amount: amount,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       transId: Uuid().v4(),
-      transType: 2, //TODO: Change 0 and 1 to Deposit and Withdaw;
+      transType: TransactionType
+          .transfer.index, //TODO: Change 0 and 1 to Deposit and Withdaw;
     ));
   }
 
