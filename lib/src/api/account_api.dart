@@ -85,6 +85,52 @@ class UserApi {
       }),
     );
 
+    router.get(
+      '/transactions',
+      ((
+        Request request,
+      ) async {
+        try {
+          final authDetails = request.context['authDetails'] as JWT;
+          final transactions = await AccountService.fetchUserTransactions(
+            id: authDetails.subject.toString(),
+          );
+
+          return Response.ok(
+            json.encode({
+              'data': {'transactions': transactions}
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            },
+          );
+        } on FormatException catch (e) {
+          print('FormatException ${e.source} ${e.message}');
+          return Response(
+            HttpStatus.badRequest,
+            body: json.encode({
+              'data': {
+                'message': 'Provide a valid Request refer to documentation'
+              }
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            },
+          );
+        } catch (e) {
+          return Response(
+            HttpStatus.forbidden,
+            body: json.encode({
+              'data': {'message': e.toString()}
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            },
+          );
+        }
+      }),
+    );
+
     router.post(
       '/transfer',
       ((
