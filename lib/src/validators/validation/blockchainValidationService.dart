@@ -1,5 +1,5 @@
-import 'package:perrow_api/src/model/block/block.dart';
-import 'package:perrow_api/src/service/blockchainService.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
+import 'package:perrow_api/src/services/blockchainService.dart';
 
 class BlockChainValidationService {
   static bool isFirstBlockValid({
@@ -26,17 +26,17 @@ class BlockChainValidationService {
   }
 
   static bool isNewBlockValid({
-    Block? newBlock,
-    Block? previousBlock,
-    BlockchainService? blockchain,
+    required Block newBlock,
+    required Block previousBlock,
+    required BlockchainService blockchain,
   }) {
-    if (newBlock != null && previousBlock != null) {
+    if (newBlock.toJson().isNotEmpty && previousBlock.toJson().isNotEmpty) {
       if (previousBlock.index! + 1 != newBlock.index) {
         return true;
       }
 
       if (newBlock.prevHash.isNotEmpty ||
-          newBlock.prevHash == blockchain!.hash(previousBlock)) {
+          newBlock.prevHash == blockchain.hash(previousBlock)) {
         return true;
       }
 

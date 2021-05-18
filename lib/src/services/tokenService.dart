@@ -1,5 +1,5 @@
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/tokenPair/tokenPair.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:redis_dart/redis_dart.dart';
 import 'package:uuid/uuid.dart';
@@ -22,9 +22,9 @@ class TokenService {
       );
     } catch (exception, stackTrace) {
       //Todo Catch Errors
+      print(stackTrace);
       rethrow;
     }
-    ;
   }
 
   Future<TokenPair> createTokenPair({required String? userId}) async {
@@ -35,7 +35,7 @@ class TokenService {
       issuer: Env.hostName,
       secret: Env.secret!,
       jwtId: tokenId,
-      expiry: Duration(minutes: 15),
+      expiry: Duration(minutes: 5), //TODO 15min
     );
 
     final refreshToken = generateJWT(
@@ -60,7 +60,7 @@ class TokenService {
     required String token,
     required Duration expiry,
   }) async {
-    await client.set('$_prefix:$id', token);
+    await client.set('$_prefix: $id', token);
     await client.expire(
       '$_prefix: $id',
       Duration(

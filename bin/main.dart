@@ -1,69 +1,43 @@
-import 'dart:io';
-import 'package:dotenv/dotenv.dart';
-import 'package:hive/hive.dart';
-import 'package:pedantic/pedantic.dart';
-import 'package:perrow_api/src/api/account_api.dart';
-import 'package:perrow_api/src/api/auth_api.dart';
-import 'package:perrow_api/src/api/blockchain_api.dart';
-import 'package:perrow_api/src/api/status_api.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/model/hive/1.rechargeNotification/rechargeNotification.dart';
-import 'package:perrow_api/src/service/AuthService.dart';
-import 'package:perrow_api/src/service/accountService.dart';
-import 'package:perrow_api/src/service/automatedTasks.dart';
-import 'package:perrow_api/src/service/blockchainService.dart';
-import 'package:perrow_api/src/service/mineService.dart';
-import 'package:perrow_api/src/service/token_service.dart';
-import 'package:perrow_api/src/service/walletServices.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:shelf_router/shelf_router.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
+// import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
-  ///Load Env Variables
+  /// Load Env Variables
   load();
 
+  /// Load Internal Stores
   Hive.init('./storage');
   Hive.registerAdapter(TransactionRecordAdapter());
   Hive.registerAdapter(RechargeNotificationAdapter());
   await Hive.openBox<TransactionRecord>('transactions');
   await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
-  /// Start Redis Token Service
-  final tokenService = TokenService();
-  await tokenService.start();
+  /// Start Token Service
+  try {
+    await tokenService.start();
+  } catch (e, stacktrace) {
+    //Todo Notify Redis Service is down
+    print(e);
+    print(stacktrace);
+  }
 
-  final accountService = AccountService();
-
-  final walletService = WalletService(accountService: accountService);
-
-  final authService = AuthService();
-
-  final blockchainService = BlockchainService(
-    walletService: walletService,
-  );
-
-  final miner = MineServices(
-    blockchain: blockchainService,
-  );
-
-  final automatedTasks = AutomatedTasks(
-    miner: miner,
-    walletService: walletService,
-  );
-
-  // final statsService = StatisticsService();
-
-  //Automated Tasks
-  unawaited(automatedTasks.startAutomatedTasks());
+  try {
+    /// Automated Tasks
+    /// Unwaited future as it continously running
+    unawaited(automatedTasks.startAutomatedTasks());
+  } catch (e) {
+    print(e);
+  }
 
   /// Shelf Router
   var app = Router();
 
   var handler = Pipeline()
       .addMiddleware(logRequests())
+      // .addMiddleware(cookieParser(Env.cookieKey!))
+      // .addMiddleware(handleSession())
       .addMiddleware(handleCors())
       .addMiddleware(handleAuth(
         secret: Env.secret!,
@@ -80,6 +54,7 @@ void main(List<String> args) async {
     AuthApi(
       secret: Env.secret!,
       tokenService: tokenService,
+      authService: authService,
     ).router,
   );
 
@@ -114,7 +89,19 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
-  var server = await shelf_io.serve(handler, '0.0.0.0', port);
+  try {
+    /// Change IP
+    /// Windows Run ipconfig
+    /// Mac 127.0.0.1
+    var server = await serve(
+      handler,
+      '0.0.0.0',
+      port,
+    );
 
-  print('Serving at http://${server.address.host}:${server.port}');
+    print('Serving at http://${server.address.host}:${server.port}');
+  } catch (error, stacktrace) {
+    print(error); //TODO Handle Error
+    print(stacktrace);
+  }
 }

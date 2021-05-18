@@ -1,13 +1,10 @@
-import 'dart:convert';
-
+import 'package:perrow_api/packages/core.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:hex/hex.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
 
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/model/block/block.dart';
-import 'package:perrow_api/src/model/hive/0.transactionRecord/transactionRecord.dart';
-import 'package:perrow_api/src/service/databaseService.dart';
-import 'package:perrow_api/src/service/walletServices.dart';
+import 'package:perrow_api/packages/services.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,6 +15,26 @@ class BlockchainService {
     required this.walletService,
   });
 
+  Future<Block> get getLastBlock async {
+    var response;
+    try {
+      response = await DatabaseService.client
+          .from('blockchain')
+          .select()
+          .limit(1)
+          .order('timestamp', ascending: false)
+          .execute()
+          .onError(
+            (error, stackTrace) => throw Exception('$error $stackTrace'),
+          ); //TODO Stacktace
+    } catch (e, trace) {
+      print('lastBlock ${e.toString()} ${trace.toString()}');
+      rethrow;
+    }
+    ;
+    return Block.fromJson(response.data[0]);
+  }
+
   Future<Block> newBlock(
       Block prevBlock, int proof, String previousHash) async {
     if (previousHash.isEmpty) {
@@ -25,10 +42,13 @@ class BlockchainService {
     }
 
     try {
-      var blockTransactions =
-          List.of(walletService.pendingTransactions.values.toList());
-
       var id = Uuid().v4();
+
+      var blockTransactions = List.of(walletService.pendingTransactions.values);
+
+      for (var transaction in blockTransactions) {
+        transaction.blockId = id;
+      }
 
       await walletService
           .processPayments(prevBlock, id)
@@ -80,24 +100,40 @@ class BlockchainService {
     }
   }
 
-  Future<Block> get lastBlock async {
-    var response;
-    try {
-      response = await DatabaseService.client
-          .from('blockchain')
-          .select()
-          .limit(1)
-          .order('timestamp', ascending: false)
-          .execute()
-          .onError(
-            (error, stackTrace) => throw Exception('$error $stackTrace'),
-          ); //TODO Stacktace
-    } catch (e, trace) {
-      print('lastBlock ${e.toString()} ${trace.toString()}');
-      rethrow;
+  Future<Block> mine() async {
+    if (pendingTransactions.isEmpty) {
+      // throw NoPendingTransactionException();
+      //TODO IGNORE
     }
-    ;
-    return Block.fromJson(response.data[0]);
+
+    var lastBlock = await getLastBlock;
+    var lastProof = lastBlock.proof;
+    var proof = await proofOfWork(lastProof);
+
+    // Forge the new Block by adding it to the chain
+    var prevHash = hash(lastBlock);
+    var block = await newBlock(
+      lastBlock,
+      proof,
+      prevHash,
+    );
+
+    return block;
+
+    // var validblock = BlockChainValidationService.isNewBlockValid(
+    //   blockchain: ,
+    //   newBlock: block,
+    //   previousBlock: lastBlock,
+    // );
+
+    // return MineResult(
+    //   message: 'New Block Forged',
+    //   validBlock: validblock,
+    //   index: block.index,
+    //   transactions: block.blockTransactions,
+    //   proof: proof,
+    //   prevHash: prevHash,
+    // );
   }
 
   List<TransactionRecord> get pendingTransactions {

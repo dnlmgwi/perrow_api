@@ -1,28 +1,22 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:perrow_api/packages/perrow_api.dart';
+import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/src/errors/authExceptions.dart';
-import 'package:perrow_api/src/model/api/auth/user/register/registerRequest.dart';
-import 'package:perrow_api/src/service/AuthService.dart';
-import 'package:perrow_api/src/service/token_service.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf_router/shelf_router.dart';
 
 class AuthApi {
   String secret;
   TokenService tokenService;
+  AuthService authService;
 
   AuthApi({
     required this.secret,
     required this.tokenService,
+    required this.authService,
   });
 
   Router get router {
     final router = Router();
-
-    final _authService = AuthService();
 
     router.post(
       '/register',
@@ -30,10 +24,10 @@ class AuthApi {
         Request request,
       ) async {
         try {
-          var data = RegisterRequest.fromJson(
+          var payload = RegisterRequest.fromJson(
               json.decode(await request.readAsString()));
 
-          if (AuthApiValidation.ageCheck(data.age)) {
+          if (AuthApiValidation.ageCheck(payload.age)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
@@ -46,7 +40,7 @@ class AuthApi {
             );
           }
 
-          if (AuthApiValidation.genderCheck(data.gender)) {
+          if (AuthApiValidation.genderCheck(payload.gender)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
@@ -59,7 +53,7 @@ class AuthApi {
             );
           }
 
-          if (AuthApiValidation.pinCheck(data.pin)) {
+          if (AuthApiValidation.pinCheck(payload.pin)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
@@ -74,7 +68,7 @@ class AuthApi {
             );
           }
 
-          if (AuthApiValidation.phoneNumberCheck(data.phoneNumber)) {
+          if (AuthApiValidation.phoneNumberCheck(payload.phoneNumber)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
@@ -87,11 +81,11 @@ class AuthApi {
             );
           }
 
-          await _authService.register(
-            gender: data.gender!,
-            pin: data.pin!,
-            phoneNumber: data.phoneNumber!,
-            age: data.age!,
+          await authService.register(
+            gender: payload.gender!,
+            pin: payload.pin!,
+            phoneNumber: payload.phoneNumber!,
+            age: payload.age!,
           );
 
           return Response.ok(
@@ -135,19 +129,17 @@ class AuthApi {
         Request request,
       ) async {
         try {
-          final payload = await request.readAsString();
+          var payload =
+              LoginRequest.fromJson(json.decode(await request.readAsString()));
 
-          final userData = json.decode(payload);
-
-          final id = userData['id'];
-          final pin = userData['pin'];
-
-          if (id == null || id == '') {
+          if (AuthApiValidation.pinCheck(payload.pin)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
               body: json.encode({
-                'data': {'message': 'Please provide an id'}
+                'data': {
+                  'message': InvalidPinException().toString(),
+                }
               }),
               headers: {
                 HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
@@ -155,12 +147,27 @@ class AuthApi {
             );
           }
 
-          if (pin == null || pin == '') {
+          // if (AuthApiValidation.phoneNumberCheck(payload.phoneNumber)) {
+          //   //Todo: Input Validation Errors
+          //   return Response(
+          //     HttpStatus.badRequest,
+          //     body: json.encode({
+          //       'data': {'message': InvalidPhoneNumberException().toString()}
+          //     }),
+          //     headers: {
+          //       HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+          //     },
+          //   );
+          // }
+
+          if (AuthApiValidation.uuidCheck(payload.id)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
               body: json.encode({
-                'data': {'message': 'Please provide a pin'}
+                'data': {
+                  'message': InvalidUserIDException().toString(),
+                }
               }),
               headers: {
                 HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
@@ -168,10 +175,9 @@ class AuthApi {
             );
           }
 
-          final token = await _authService.login(
-            pin: pin,
-            id: id,
-            tokenService: tokenService,
+          final token = await authService.login(
+            pin: payload.pin!,
+            id: payload.id!,
           );
 
           return Response.ok(
