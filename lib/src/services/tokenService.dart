@@ -22,9 +22,9 @@ class TokenService {
       );
     } catch (exception, stackTrace) {
       //Todo Catch Errors
+      print(stackTrace);
       rethrow;
     }
-    ;
   }
 
   Future<TokenPair> createTokenPair({required String? userId}) async {
@@ -35,7 +35,7 @@ class TokenService {
       issuer: Env.hostName,
       secret: Env.secret!,
       jwtId: tokenId,
-      expiry: Duration(minutes: 15),
+      expiry: Duration(minutes: 5), //TODO 15min
     );
 
     final refreshToken = generateJWT(

@@ -1,7 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
+// import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
   /// Load Env Variables
@@ -18,20 +18,25 @@ void main(List<String> args) async {
   try {
     await tokenService.start();
   } catch (e, stacktrace) {
-    //todo Notify Service is down
+    //Todo Notify Redis Service is down
     print(e);
+    print(stacktrace);
   }
 
-  /// Automated Tasks
-  /// Unwaited future as it continously
-  unawaited(automatedTasks.startAutomatedTasks());
+  try {
+    /// Automated Tasks
+    /// Unwaited future as it continously running
+    unawaited(automatedTasks.startAutomatedTasks());
+  } catch (e) {
+    print(e);
+  }
 
   /// Shelf Router
   var app = Router();
 
   var handler = Pipeline()
       .addMiddleware(logRequests())
-      .addMiddleware(cookieParser(Env.cookieKey!))
+      // .addMiddleware(cookieParser(Env.cookieKey!))
       // .addMiddleware(handleSession())
       .addMiddleware(handleCors())
       .addMiddleware(handleAuth(
@@ -84,11 +89,15 @@ void main(List<String> args) async {
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
-  var server = await serve(
-    handler,
-    '127.0.0.1',
-    port,
-  );
+  try {
+    var server = await serve(
+      handler,
+      '127.0.0.1',
+      port,
+    );
 
-  print('Serving at http://${server.address.host}:${server.port}');
+    print('Serving at http://${server.address.host}:${server.port}');
+  } catch (error, stackTrace) {
+    print(error); //TODO Handle Error
+  }
 }
