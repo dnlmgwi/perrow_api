@@ -60,7 +60,7 @@ class TokenService {
     required String token,
     required Duration expiry,
   }) async {
-    await client.set('$_prefix:$id', token);
+    await client.set('$_prefix: $id', token);
     await client.expire(
       '$_prefix: $id',
       Duration(

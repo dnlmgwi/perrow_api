@@ -90,14 +90,18 @@ void main(List<String> args) async {
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
   try {
+    /// Change IP
+    /// Windows Run ipconfig
+    /// Mac 127.0.0.1
     var server = await serve(
       handler,
-      '127.0.0.1',
+      '0.0.0.0',
       port,
     );
 
     print('Serving at http://${server.address.host}:${server.port}');
-  } catch (error, stackTrace) {
+  } catch (error, stacktrace) {
     print(error); //TODO Handle Error
+    print(stacktrace);
   }
 }
