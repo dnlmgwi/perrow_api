@@ -55,8 +55,8 @@ class WalletService {
               if (response.error != null) {
                 throw Exception(response.error!.message);
               }
-              await notificationService.sendNotification(transaction,
-                  response); //TODO Enable Only When in Development Env.
+              // await notificationService.sendNotification(transaction,
+              //     response); //TODO Enable Only When in Development Env.
             }).whenComplete(
               //Every Transaction is Proccessed and Removed from the List
               () => transaction.delete(),
