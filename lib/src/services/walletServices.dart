@@ -55,7 +55,8 @@ class WalletService {
               if (response.error != null) {
                 throw Exception(response.error!.message);
               }
-              // await notificationService.sendNotification(transaction, response); //TODO Enable Only When in Development Env.
+              await notificationService.sendNotification(transaction,
+                  response); //TODO Enable Only When in Development Env.
             }).whenComplete(
               //Every Transaction is Proccessed and Removed from the List
               () => transaction.delete(),
@@ -361,7 +362,7 @@ class WalletService {
     /// Edit User Account Balance
     /// String id - User Perrow API id
     /// String value - Transaction Value
-    /// String transactionType - 0: Withdraw, 1: Deposit
+    /// String [transactionType] - 0: Withdraw, 1: Deposit, 2: Transfer
     await pendingTransactions.add(TransactionRecord(
       sender: sender,
       recipient: recipient,

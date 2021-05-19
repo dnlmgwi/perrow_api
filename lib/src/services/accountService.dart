@@ -58,4 +58,35 @@ class AccountService {
 
     return TransAccount.fromJson(response.data[0]);
   }
+
+  static Future<List<TransactionRecord>> fetchUserTransactions(
+      {String? id, String? phoneNumber}) async {
+    //Todo Handling
+    var jsonTransactions = <TransactionRecord>[];
+
+    var response = await DatabaseService.client //TODO Login with ID/PhoneNumber
+        .from('transactions')
+        .select()
+        .match({
+          'sender': id ?? phoneNumber,
+        })
+        .limit(10)
+        .order('timestamp', ascending: false)
+        .execute()
+        .onError(
+          (error, stackTrace) => throw Exception(error),
+        );
+
+    var result = response.data as List;
+
+    result.forEach((element) {
+      jsonTransactions.add(TransactionRecord.fromJson(element));
+    });
+
+    if (result.isEmpty) {
+      throw AccountNotFoundException();
+    }
+
+    return jsonTransactions;
+  }
 }

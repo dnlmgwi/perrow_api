@@ -72,8 +72,8 @@ class NotificationService {
   /// Base Notification
   Future<void> paymentProcessed(
       {required String id, required Map message}) async {
-    final channel = _pubnub.channel(id);
-    await channel.publish(message).onError((error, stackTrace) {
+    await _pubnub
+        .publish(id, {'content': message}).onError((error, stackTrace) {
       print(error);
       throw NotImplementedException(); //TODO Handle Error
     });
