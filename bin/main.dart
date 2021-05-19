@@ -93,9 +93,10 @@ void main(List<String> args) async {
     /// Change IP
     /// Windows Run ipconfig
     /// Mac 127.0.0.1
+    /// default for Cloud 0.0.0.0
     var server = await serve(
       handler,
-      '192.168.8.100',
+      '0.0.0.0',
       port,
     );
 

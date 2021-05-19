@@ -5,24 +5,6 @@ import 'package:perrow_api/src/validators/account_responses.dart';
 import 'package:perrow_api/src/validators/account_validation.dart';
 import 'package:perrow_api/src/validators/validation/AuthValidationService.dart';
 
-// import 'package:dart_date/dart_date.dart';
-// Account(
-//                         id: user.id,
-//                         age: user.age,
-//                         balance: user.balance,
-//                         gender: user.gender,
-//                         joinedDate: user.joinedDate,
-//                         phoneNumber: user.phoneNumber,
-//                         pin: user.pin,
-//                         salt: user.salt,
-//                         status: user.status,
-//                         lastTrans: user.lastTrans)
-//                     .toJson()
-//                     .addAll({
-//                   'last_trans_text': DateTime.fromMillisecondsSinceEpoch(user.lastTrans!)
-//                       .toHumanString(),
-//                 })
-
 class UserApi {
   AuthService authService;
 
