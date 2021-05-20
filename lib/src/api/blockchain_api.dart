@@ -12,7 +12,7 @@ class BlockChainApi {
 
   Handler get router {
     final router = Router();
-    final handler = Pipeline().addMiddleware(checkAuth()).addHandler(router);
+    final handler = Pipeline().addMiddleware(checkAuthorisation()).addHandler(router);
 
     router.get(
       '/pending',

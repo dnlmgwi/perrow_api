@@ -1,6 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
+import 'package:retry/retry.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
@@ -11,17 +12,25 @@ void main(List<String> args) async {
   Hive.init('./storage');
   Hive.registerAdapter(TransactionRecordAdapter());
   Hive.registerAdapter(RechargeNotificationAdapter());
+
   await Hive.openBox<TransactionRecord>('transactions');
   await Hive.openBox<RechargeNotification>('rechargeNotifications');
 
   /// Start Token Service
-  try {
-    await tokenService.start();
-  } catch (e, stacktrace) {
+
+  await retry(
+    // Make a GET request
+    () => tokenService.start(),
+    // Retry on SocketException or TimeoutException
+    retryIf: (e) => e is SocketException || e is TimeoutException,
+    onRetry: (e) {
+      //Todo: Notify Service Provider
+    },
+  ).onError((error, stackTrace) {
     //Todo Notify Redis Service is down
-    print(e);
-    print(stacktrace);
-  }
+    print(error);
+    print(stackTrace);
+  });
 
   try {
     /// Automated Tasks
@@ -90,19 +99,23 @@ void main(List<String> args) async {
   var port = portEnv == null ? 9999 : int.parse(portEnv);
 
   try {
-    /// Change IP
-    /// Windows Run ipconfig
+    ///TODO: Change IP On Platform
+    ///Windows Run ipconfig
     /// Mac 127.0.0.1
     /// default for Cloud 0.0.0.0
     var server = await serve(
       handler,
-      '0.0.0.0',
+      '127.0.0.1',
       port,
     );
 
+    // Enable content compression
+    server.autoCompress = true;
+
     print('Serving at http://${server.address.host}:${server.port}');
   } catch (error, stacktrace) {
-    print(error); //TODO Handle Error
+    //TODO Handle Error
+    print(error);
     print(stacktrace);
   }
 }

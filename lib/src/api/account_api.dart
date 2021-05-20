@@ -17,7 +17,7 @@ class UserApi {
 
   Handler get router {
     final router = Router();
-    final handler = Pipeline().addMiddleware(checkAuth()).addHandler(router);
+    final handler = Pipeline().addMiddleware(checkAuthorisation()).addHandler(router);
 
     final _accountService = AccountService();
 
