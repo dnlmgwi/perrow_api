@@ -57,4 +57,13 @@ class Env {
 
   ///Api Economy Registered Account Opening Balance
   static final newAccountBalance = env['NEW_ACCOUNT_BALANCE'];
+
+  ///Mail Server
+
+  static final mail_host = env['MAIL_HOST'];
+  static final mail_from_address = env['MAIL_FROM_ADDRESS'];
+  static final mail_from_name = env['MAIL_FROM_NAME'];
+  static final mail_username = env['MAIL_USERNAME'];
+  static final mail_password = env['MAIL_PASSWORD'];
+  static final mail_port = env['MAIL_PORT'];
 }

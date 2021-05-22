@@ -1,19 +1,16 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:perrow_api/src/config.dart';
 
 class MailingService {
-  static final _username = 'pdmgawi@gmail.com';
-  static final _password = 'Yk5ynI9XJRhwdWDm';
-  static final _port = 587;
-
   static final smtpServer = SmtpServer(
-    'smtp-relay.sendinblue.com',
-    password: _password,
-    username: _username,
+    Env.mail_host!,
+    password: Env.mail_password!,
+    username: Env.mail_username!,
     allowInsecure: true,
     ignoreBadCertificate: true,
-    port: _port,
-    ssl: false,
+    port: int.parse(Env.mail_port!),
+    ssl: true,
   );
 
   var connection = PersistentConnection(smtpServer);
@@ -29,17 +26,14 @@ class MailingService {
       }
     }
     await connection.send(message);
-    await connection.close();
   }
 
-  Future<Message> invoiceEmail() async {
+  Future<Message> invoiceEmail(String recipeintEmail) async {
     // Create our message.
     final message = Message()
-      ..from = Address(_username, 'Your name')
-      ..recipients.add('destination@example.com')
-      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-      ..bccRecipients.add(Address('bccAddress@example.com'))
-      ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
+      ..from = Address(Env.mail_from_address!, Env.mail_from_name!)
+      ..recipients.add(recipeintEmail)
+      ..subject = 'Test Invoice ${DateTime.now()}'
       ..text = 'This is the plain text.\nThis is line 2 of the text part.'
       ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
 
