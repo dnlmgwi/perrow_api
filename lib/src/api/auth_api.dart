@@ -90,10 +90,7 @@ class AuthApi {
 
           return Response.ok(
             json.encode({
-              'data': {
-                'message': 'Account Created',
-                'id': response.id,
-              }
+              'data': response.toJson(),
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
@@ -107,6 +104,16 @@ class AuthApi {
               'data': {
                 'message': 'Provide a valid Request refer to documentation'
               }
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            },
+          );
+        } on AccountDuplicationFoundException catch (e) {
+          return Response(
+            HttpStatus.conflict,
+            body: json.encode({
+              'data': {'message': 'Please, login Instead.'}
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

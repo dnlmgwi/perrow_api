@@ -14,7 +14,7 @@ class AuthService {
   Future<Account> register({
     required String pin,
     required String gender,
-    required int age,
+    required String age,
     required String phoneNumber,
   }) async {
     final salt = generateSalt();
@@ -60,10 +60,7 @@ class AuthService {
         throw Exception(response.error!.message);
       }
 
-      print(response.data); //TODO Notify User Once Account Is Created
-
-      return response.data; //TODO Should it return this data? Yes!
-
+      return Account.fromJson(response.data[0]);
     } on PostgrestError catch (exception, stackTrace) {
       // await Sentry.captureException(
       //   exception,

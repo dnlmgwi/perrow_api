@@ -23,7 +23,7 @@ class Account {
   @JsonKey(name: 'joined_date')
   int joinedDate;
 
-  int age;
+  String age;
 
   @JsonKey(name: 'last_trans')
   late int? lastTrans;

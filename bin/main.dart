@@ -96,7 +96,7 @@ void main(List<String> args) async {
   // );
 
   var portEnv = Platform.environment['PORT'];
-  var port = portEnv == null ? 9999 : int.parse(portEnv);
+  var port = portEnv == null ? 8989 : int.parse(portEnv);
 
   try {
     ///TODO: Change IP On Platform
