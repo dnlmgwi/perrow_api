@@ -26,7 +26,7 @@ class TokenService {
 
     final token = generateJWT(
       subject: userId,
-      issuer: Env.hostName,
+      issuer: Env.hostName!,
       secret: Env.secret!,
       jwtId: tokenId,
       expiry: Duration(minutes: 5), //TODO 15min
@@ -34,7 +34,7 @@ class TokenService {
 
     final refreshToken = generateJWT(
       subject: userId,
-      issuer: Env.hostName,
+      issuer: Env.hostName!,
       secret: Env.secret!,
       jwtId: Uuid().v4(),
       expiry: refreshTokenExpiry,

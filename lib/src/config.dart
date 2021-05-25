@@ -3,7 +3,7 @@ import 'package:dotenv/dotenv.dart';
 class Env {
   /// Server Side
   /// DO NOT TOUCH
-  static final hostName = '0.0.0.0';
+  static final hostName = env['HOST_NAME'];
 
   ///Crash Analytics
   static final sentry = env['SENTRY'];
