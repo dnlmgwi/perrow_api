@@ -31,12 +31,11 @@ dependencies:
   time: ^2.0.0
   uuid: ^3.0.3
   validators: ^3.0.0
-  mockito: ^5.0.8
   retry: ^3.1.0
 
 dev_dependencies:
-  build_runner: ^2.0.3
-  build_web_compilers: ^3.0.0
+  build_runner: ^1.12.2
+  build_web_compilers: ^2.12.2
   json_serializable: ^4.1.2
   pedantic: ^1.11.0
   test: ^1.17.3
