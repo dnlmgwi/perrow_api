@@ -176,7 +176,7 @@ class UserApi {
             HttpStatus.badRequest,
             body: json.encode({
               'data': {
-                'message': 'Provide a valid Request refer to documentation'
+                'message': 'Provide a valid request refer to documentation'
               }
             }),
             headers: {

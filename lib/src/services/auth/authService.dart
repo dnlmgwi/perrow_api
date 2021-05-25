@@ -11,7 +11,7 @@ class AuthService {
 
   AuthService({required this.tokenService});
 
-  Future register({
+  Future<Account> register({
     required String pin,
     required String gender,
     required int age,
@@ -62,7 +62,7 @@ class AuthService {
 
       print(response.data); //TODO Notify User Once Account Is Created
 
-      return response.data; //TODO Should it return this data?
+      return response.data; //TODO Should it return this data? Yes!
 
     } on PostgrestError catch (exception, stackTrace) {
       // await Sentry.captureException(

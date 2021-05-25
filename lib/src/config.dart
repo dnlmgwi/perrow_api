@@ -8,6 +8,7 @@ class Env {
   ///Crash Analytics
   static final sentry = env['SENTRY'];
 
+  //Cookie Secret Keys
   static final cookieKey = env['COOKIE_KEY'];
 
   /// API System Address
