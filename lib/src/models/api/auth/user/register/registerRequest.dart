@@ -6,7 +6,7 @@ part 'registerRequest.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class RegisterRequest {
-  late final int? age;
+  late final String? age;
   late final String? gender;
   late final String? pin;
   late final String? phoneNumber;
