@@ -105,7 +105,7 @@ void main(List<String> args) async {
     /// default for Cloud 0.0.0.0
     var server = await serve(
       handler,
-      '0.0.0.0',
+      Env.hostName,
       port,
     );
 
