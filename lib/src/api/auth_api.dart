@@ -81,7 +81,7 @@ class AuthApi {
             );
           }
 
-          await authService.register(
+          var response = await authService.register(
             gender: payload.gender!,
             pin: payload.pin!,
             phoneNumber: payload.phoneNumber!,
@@ -90,7 +90,10 @@ class AuthApi {
 
           return Response.ok(
             json.encode({
-              'data': {'message': 'Account Created'}
+              'data': {
+                'message': 'Account Created',
+                'id': response.id,
+              }
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

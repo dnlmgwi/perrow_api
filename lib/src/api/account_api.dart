@@ -17,7 +17,7 @@ class UserApi {
 
   Handler get router {
     final router = Router();
-    final handler = Pipeline().addMiddleware(checkAuth()).addHandler(router);
+    final handler = Pipeline().addMiddleware(checkAuthorisation()).addHandler(router);
 
     final _accountService = AccountService();
 
@@ -176,7 +176,7 @@ class UserApi {
             HttpStatus.badRequest,
             body: json.encode({
               'data': {
-                'message': 'Provide a valid Request refer to documentation'
+                'message': 'Provide a valid request refer to documentation'
               }
             }),
             headers: {

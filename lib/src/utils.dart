@@ -77,6 +77,7 @@ Middleware handleAuth({required String secret}) {
       var token, jwt;
 
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
+        
         token = authHeader.substring(7);
 
         try {
@@ -94,46 +95,6 @@ Middleware handleAuth({required String secret}) {
       return await innerhandler(updateRequest);
     };
   };
-}
-
-// Middleware handleSession() {
-//   return (Handler innerhandler) => (Request request) async {
-//         var cookies = request.context['cookies'] as CookieParser;
-
-//         if (cookies.get('ping') == null) {
-//           //secure: true - means send it via https only
-//           cookies.clear();
-//           try {
-//             await cookies.setEncrypted('pong', 'bar',
-//                 secure: true, httpOnly: true);
-//           } catch (e) {
-//             print('Handler Cookie Error: ${e.toString()}');
-//             //Todo Notify Auth Error
-//           }
-//         }
-
-//         final updateRequest = request.change(context: {
-//           HttpHeaders.setCookieHeader: cookies.toHeader(),
-//         });
-
-//         return innerhandler(updateRequest);
-//       };
-// }
-
-Middleware checkAuth() {
-  return createMiddleware(requestHandler: (Request request) {
-    if (request.context['authDetails'] == null) {
-      return Response.forbidden(
-        json.encode({
-          'data': {'message': 'Not authorised to perform this request'}
-        }),
-        headers: {
-          HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
-        },
-      );
-    }
-    return null;
-  });
 }
 
 Middleware checkAuthorisation() {

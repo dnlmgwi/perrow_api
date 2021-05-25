@@ -13,18 +13,12 @@ class TokenService {
   ); //TODO: 2 Days is best practice? Add To Env
 
   Future<void> start() async {
-    try {
-      client = await RedisClient.connect(
-        Env.redisHostname!,
-        int.parse(
-          Env.redisPort!,
-        ),
-      );
-    } catch (exception, stackTrace) {
-      //Todo Catch Errors
-      print(stackTrace);
-      rethrow;
-    }
+    client = await RedisClient.connect(
+      Env.redisHostname!,
+      int.parse(
+        Env.redisPort!,
+      ),
+    );
   }
 
   Future<TokenPair> createTokenPair({required String? userId}) async {
