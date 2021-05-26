@@ -29,7 +29,7 @@ class TokenService {
       issuer: Env.hostName!,
       secret: Env.secret!,
       jwtId: tokenId,
-      expiry: Duration(minutes: 5), //TODO 15min
+      expiry: Duration(minutes: 45), //TODO 15min
     );
 
     final refreshToken = generateJWT(
