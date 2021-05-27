@@ -3,10 +3,11 @@ import 'package:perrow_api/src/config.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 Middleware handleCors() {
-  var corsHeaders = {
-    'Access-Control-Allow-Origins': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-    'Access-Control-Allow-Headers': 'Origin, Content-Type',
+  final corsHeaders = {
+    ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+    ACCESS_CONTROL_ALLOW_HEADERS: 'Origin, Content-Type',
+    ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE',
+    'Content-Type': 'application/json;charset=utf-8'
   };
 
   return createMiddleware(requestHandler: (Request request) {
@@ -77,7 +78,6 @@ Middleware handleAuth({required String secret}) {
       var token, jwt;
 
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
-        
         token = authHeader.substring(7);
 
         try {

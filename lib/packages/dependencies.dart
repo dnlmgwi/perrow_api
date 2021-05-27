@@ -17,4 +17,5 @@ export 'package:shelf/shelf.dart';
 export 'package:shelf/shelf.dart';
 export 'package:throttling/throttling.dart';
 export 'package:validators/validators.dart';
+export 'package:shelf_cors_headers/shelf_cors_headers.dart';
 
