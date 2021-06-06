@@ -20,7 +20,6 @@ dependencies:
   postgrest: ^0.1.0
   pubnub: ^4.0.0-beta.0
   realtime_client: ^0.0.8
-  redis_dart: ^0.1.0+4
   shelf_router: ^1.0.0
   shelf_secure_cookie: ^1.2.0
   shelf: ^1.1.4
