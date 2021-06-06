@@ -7,15 +7,6 @@ part 'account.g.dart';
 class Account {
   String? id;
 
-  String gender;
-
-  String pin;
-
-  @JsonKey(name: 'phone_number')
-  String phoneNumber;
-
-  String salt;
-
   String status;
 
   int balance;
@@ -23,22 +14,15 @@ class Account {
   @JsonKey(name: 'joined_date')
   int joinedDate;
 
-  String age;
-
-  @JsonKey(name: 'last_trans')
-  late int? lastTrans;
+  @JsonKey(name: 'last_transaction')
+  late int? lastTransaction;
 
   Account({
     this.id,
-    required this.gender,
-    required this.pin,
-    required this.phoneNumber,
-    required this.salt,
     required this.status,
     required this.balance,
     required this.joinedDate,
-    required this.age,
-    this.lastTrans,
+    this.lastTransaction,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) =>

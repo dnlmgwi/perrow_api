@@ -4,7 +4,9 @@ import 'package:perrow_api/packages/perrow_api.dart';
 class NotificationService {
   /// Send Nofication
   Future sendNotification(
-      TransactionRecord transaction, PostgrestResponse response) async {
+    TransactionRecord transaction,
+    PostgrestResponse response,
+  ) async {
     switch (transaction.transType) {
       case 0:
         UnimplementedError(); //TODO
@@ -70,8 +72,10 @@ class NotificationService {
   }
 
   /// Base Notification
-  Future<void> paymentProcessed(
-      {required String id, required Map message}) async {
+  Future<void> paymentProcessed({
+    required String id,
+    required Map message,
+  }) async {
     await _pubnub
         .publish(id, {'content': message}).onError((error, stackTrace) {
       print(error);
@@ -80,9 +84,12 @@ class NotificationService {
   }
 
   static final _myKeyset = Keyset(
-      subscribeKey: Env.pnSubscribeKey!,
-      publishKey: Env.pnPublishKey,
-      uuid: UUID(Env.systemAddress!));
+    subscribeKey: Env.pnSubscribeKey!,
+    publishKey: Env.pnPublishKey,
+    uuid: UUID(
+      Env.systemAddress!,
+    ),
+  );
 
   static final _pubnub = PubNub(defaultKeyset: _myKeyset);
 }

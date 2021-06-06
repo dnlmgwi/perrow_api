@@ -2,7 +2,6 @@ library perrow_api_models;
 
 /// Auth
 export 'package:perrow_api/src/models/api/auth/user/transaction/transAccount.dart';
-export 'package:perrow_api/src/models/api/auth/user/login/loginRequest.dart';
 export 'package:perrow_api/src/models/api/auth/user/register/registerRequest.dart';
 
 /// Blockchain

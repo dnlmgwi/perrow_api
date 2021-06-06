@@ -1,5 +1,4 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/config.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 Middleware handleCors() {
@@ -20,47 +19,48 @@ Middleware handleCors() {
   });
 }
 
-String generateSalt([int length = 32]) {
-  final random = Random.secure();
-  final saltbytes = List<int>.generate(length, (_) => random.nextInt(256));
-  return base64.encode(saltbytes);
-}
+// String generateSalt([int length = 32]) {
+//   final random = Random.secure();
+//   final saltbytes = List<int>.generate(length, (_) => random.nextInt(256));
+//   return base64.encode(saltbytes);
+// }
 
-String hashPin({required String pin, required String salt}) {
-  final codec = Utf8Codec();
-  final key = codec.encode(pin);
-  final saltbytes = codec.encode(salt);
-  final hmac = Hmac(sha256, key);
-  final digest = hmac.convert(saltbytes);
-  return digest.toString();
-}
+// String hashPin({required String pin, required String salt}) {
+//   final codec = Utf8Codec();
+//   final key = codec.encode(pin);
+//   final saltbytes = codec.encode(salt);
+//   final hmac = Hmac(sha256, key);
+//   final digest = hmac.convert(saltbytes);
+//   return digest.toString();
+// }
 
-String generateJWT(
-    {required String? subject,
-    required String issuer,
-    required String secret,
-    String? jwtId,
-    Duration expiry = const Duration(
-      minutes: 20,
-    )}) {
-  // Create a json web token
-  final jwt = JWT(
-    {
-      'iat': DateTime.now().millisecondsSinceEpoch,
-    },
-    subject: subject,
-    issuer: Env.issuer,
-    jwtId: jwtId,
-  );
-  return jwt.sign(
-    SecretKey(secret),
-    expiresIn: expiry,
-  );
-}
+// String generateJWT(
+//     {required String? subject,
+//     required String issuer,
+//     required String secret,
+//     String? jwtId,
+//     Duration expiry = const Duration(
+//       minutes: 20,
+//     )}) {
+//   // Create a json web token
+//   final jwt = JWT(
+//     {
+//       'iat': DateTime.now().millisecondsSinceEpoch,
+//     },
+//     subject: subject,
+//     issuer: Env.issuer,
+//     jwtId: jwtId,
+//   );
+//   return jwt.sign(
+//     SecretKey(secret),
+//     expiresIn: expiry,
+//   );
+// }
 
 dynamic verifyJWT({required String token, required String secret}) {
   try {
     final jwt = JWT.verify(token, SecretKey(secret));
+    //TODO Zero Trust
     return jwt;
   } on JWTExpiredError catch (e) {
     print('JWTExpiredError ${e.message}');
@@ -98,6 +98,40 @@ Middleware handleAuth({required String secret}) {
 }
 
 Middleware checkAuthorisation() {
+  return createMiddleware(
+    requestHandler: (Request request) {
+      if (request.context['authDetails'] == null) {
+        return Response.forbidden(
+            json.encode({
+              'data': {'message': 'Not authorised to perform this request'}
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            });
+      }
+      return null;
+    },
+  );
+}
+
+Middleware rateLimmiting() {
+  return createMiddleware(
+    requestHandler: (Request request) {
+      if (request.context['authDetails'] == null) {
+        return Response.forbidden(
+            json.encode({
+              'data': {'message': 'Not authorised to perform this request'}
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            });
+      }
+      return null;
+    },
+  );
+}
+
+Middleware userPerrmissions() {
   return createMiddleware(
     requestHandler: (Request request) {
       if (request.context['authDetails'] == null) {

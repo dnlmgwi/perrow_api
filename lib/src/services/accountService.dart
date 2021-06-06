@@ -6,9 +6,9 @@ class AccountService {
     var response;
     try {
       response = await DatabaseService.client
-          .from('beneficiary_accounts')
+          .from('wallet')
           .select(
-            'status, balance, id, phone_number, last_trans',
+            'status, balance, id, last_transaction',
           )
           .match({
         'id': id,
@@ -36,9 +36,9 @@ class AccountService {
     var response;
     try {
       response = await DatabaseService.client
-          .from('beneficiary_accounts')
+          .from('wallet') //TODO Change Lookup Table
           .select(
-            'status, balance, id, phone_number, last_trans',
+            'status, balance, id, last_transaction',
           )
           .match({
         'phoneNumber': phoneNumber,
@@ -60,17 +60,17 @@ class AccountService {
   }
 
   static Future<List<TransactionRecord>> fetchUserTransactions(
-      {String? id, String? phoneNumber}) async {
+      {required String id, int? paginate}) async {
     //Todo Handling
     var jsonTransactions = <TransactionRecord>[];
 
     var response = await DatabaseService.client //TODO Login with ID/PhoneNumber
-        .from('transactions')
+        .from('transaction')
         .select()
         .match({
-          'sender': id ?? phoneNumber,
+          'sender': id,
         })
-        .limit(10)
+        .limit(paginate ??= 10)
         .order('timestamp', ascending: false)
         .execute()
         .onError(
@@ -79,13 +79,13 @@ class AccountService {
 
     var result = response.data as List;
 
+    if (result.isEmpty) {
+      throw TransactionsNotFoundException();
+    }
+
     result.forEach((element) {
       jsonTransactions.add(TransactionRecord.fromJson(element));
     });
-
-    if (result.isEmpty) {
-      throw AccountNotFoundException();
-    }
 
     return jsonTransactions;
   }

@@ -12,6 +12,20 @@ class AccountNotFoundException implements Exception {
   }
 }
 
+class TransactionsNotFoundException implements Exception {
+  ///This Exception is thrown when the account cannot be Found in the DB
+  late String _message;
+
+  TransactionsNotFoundException([String message = 'User Has No Transaction']) {
+    _message = message;
+  }
+
+  @override
+  String toString() {
+    return _message;
+  }
+}
+
 class TransIDNotFoundException implements Exception {
   ///This Exception is thrown when the account cannot be Found in the DB
   late String _message;
