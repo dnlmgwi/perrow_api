@@ -1,105 +1,48 @@
-import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/utils.dart';
-import 'package:perrow_api/src/validators/validation/AuthValidationService.dart';
-import 'package:perrow_api/src/config.dart';
-import 'package:postgrest/postgrest.dart';
-import 'package:uuid/uuid.dart';
+import 'package:supabase/supabase.dart';
 
-class AuthService {
-  TokenService tokenService;
-
-  AuthService({required this.tokenService});
-
-  Future<Account> register({
-    required String pin,
-    required String gender,
-    required String age,
-    required String phoneNumber,
+class AuthServiceV2 {
+  Future<Session?> register({
+    required String email,
+    required String password,
   }) async {
-    final salt = generateSalt();
-
-    final hashpin = hashPin(
-      pin: pin,
-      salt: salt,
-    );
-
     try {
-      var response;
-      var isDuplicate = await AuthValidationService.isDuplicatedAccount(
-        phoneNumber: phoneNumber,
-      );
-
-      if (!isDuplicate) {
-        response = await DatabaseService.client
-            .from('beneficiary_accounts')
-            .insert(Account(
-              id: Uuid().v4(),
-              age: age,
-              gender: gender,
-              phoneNumber: phoneNumber,
-              pin: hashpin,
-              salt: salt,
-              status: 'normal',
-              balance: int.parse(Env.newAccountBalance!),
-              joinedDate: DateTime.now().millisecondsSinceEpoch,
-            ).toJson())
-            .execute()
-            .catchError(
-          (exception, stackTrace) async {
-            // await Sentry.captureException(
-            //   exception,
-            //   stackTrace: stackTrace,
-            // );
-            //TODO Handle Errors
-          },
-        ); //TODO Muliple Fails Alert People In Area.
-      }
+      final response =
+          await DatabaseService.sbClient.auth.signUp(email, password);
 
       if (response.error != null) {
-        throw Exception(response.error!.message);
+        // Error
+        print('Error: ${response.error?.message}');
+      } else {
+        // Success
+        final session = response.data;
+        return session;
       }
-
-      return Account.fromJson(response.data[0]);
-    } on PostgrestError catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      //   hint: stackTrace,
-      // );
-      //TODO Handle Erros
-      rethrow;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<TokenPair> login({
-    required String pin,
-    required String id,
+  Future<Session?> login({
+    required String email,
+    required String password,
   }) async {
-    Account user;
-    TokenPair tokenPair;
-
     try {
-      user = await AuthValidationService.fetchUserAccountDetails(
-        id: id,
-      ); //TODO Login with ID or PIN
-
-      final hashpin = hashPin(
-        pin: pin,
-        salt: user.salt,
+      final response = await DatabaseService.sbClient.auth.signIn(
+        email: email,
+        password: password,
       );
 
-      if (hashpin != user.pin) {
-        throw IncorrectInputException();
+      if (response.error != null) {
+        // Error
+        print('Error: ${response.error?.message}');
+      } else {
+        // Success
+        final session = response.data;
+        return session;
       }
-
-      tokenPair = await tokenService.createTokenPair(userId: user.id);
     } catch (e) {
       rethrow;
     }
-
-    return tokenPair;
   }
 }

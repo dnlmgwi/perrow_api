@@ -1,9 +1,10 @@
 
 
 import 'package:perrow_api/packages/perrow_api.dart';
+import 'package:perrow_api/src/services/auth/authService.dart';
 
 /// Start Redis Token Service
-final tokenService = TokenService();
+// final tokenService = TokenService();
 final notificationService = NotificationService();
 
 /// User Account managments
@@ -18,7 +19,8 @@ final walletService = WalletService(
 /// Register
 /// Logout [Pending]
 /// Reset Passowrd [Unimplemented]
-final authService = AuthService(tokenService: tokenService);
+
+final authServiceV2 = AuthServiceV2();
 
 /// Blockchain Services
 final blockchainService = BlockchainService(

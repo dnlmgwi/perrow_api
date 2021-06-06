@@ -13,6 +13,8 @@ class AuthApiValidation {
   /// Is Valid gender Provided
   static bool ageCheck(age) => age == null || age == '';
 
+  static bool inputNullCheck(input) => input == null || input == '';
+
   /// Is Strong Pin Provided
   /// 4-6 Digits Long
   static bool pinCheck(pin) {

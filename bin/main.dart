@@ -1,7 +1,9 @@
 import 'package:perrow_api/packages/perrow_api.dart';
+import 'package:perrow_api/src/api/auth_api.dart';
+import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:retry/retry.dart';
+// import 'package:retry/retry.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
@@ -18,19 +20,20 @@ void main(List<String> args) async {
 
   /// Start Token Service
 
-  await retry(
-    // Make a GET request
-    () => tokenService.start(),
-    // Retry on SocketException or TimeoutException
-    retryIf: (e) => e is SocketException || e is TimeoutException,
-    onRetry: (e) {
-      //Todo: Notify Service Provider
-    },
-  ).onError((error, stackTrace) {
-    //Todo Notify Redis Service is down
-    print(error);
-    print(stackTrace);
-  });
+  // await retry(
+  //   // Make a GET request
+  //   () => tokenService.start(),
+  //   // Retry on SocketException or TimeoutException
+  //   retryIf: (e) => e is SocketException || e is TimeoutException,
+  //   onRetry: (e) {
+  //     //Todo: Notify Service Provider
+  //     //Todo: Start the servie again
+  //   },
+  // ).onError((error, stackTrace) {
+  //   //Todo Notify Redis Service is down
+  //   print(error);
+  //   print(stackTrace);
+  // });
 
   try {
     /// Automated Tasks
@@ -58,12 +61,20 @@ void main(List<String> args) async {
     StatusApi().router,
   );
 
+  // app.mount(
+  //   '/v1/auth/',
+  //   AuthApi(
+  //     secret: Env.secret!,
+  //     tokenService: tokenService,
+  //     authService: authService,
+  //   ).router,
+  // );
+
   app.mount(
     '/v1/auth/',
-    AuthApi(
+    AuthApiV2(
       secret: Env.secret!,
-      tokenService: tokenService,
-      authService: authService,
+      authService: authServiceV2,
     ).router,
   );
 
@@ -77,15 +88,16 @@ void main(List<String> args) async {
   app.mount(
     '/v1/user/',
     UserApi(
-      authService: authService,
       walletService: walletService,
     ).router,
   );
 
-  // app.mount(
-  //   '/api/v1/stats/',
-  //   StatusApi(statsService: statsService).router,
-  // );
+  app.mount(
+    '/v1/wallet/',
+    WalletApi(
+      walletService: walletService,
+    ).router,
+  );
 
   // app.mount(
   //   '/api/v1/sync/',

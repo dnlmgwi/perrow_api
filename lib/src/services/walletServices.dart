@@ -40,7 +40,7 @@ class WalletService {
           }
           try {
             await DatabaseService.client
-                .from('transactions')
+                .from('transaction')
                 .insert(TransactionRecord(
                   sender: transaction.sender,
                   recipient: transaction.recipient,
@@ -188,7 +188,7 @@ class WalletService {
     PostgrestResponse response;
     try {
       response = await DatabaseService.client
-          .from('beneficiary_accounts') //TODO TABLE NAME
+          .from('wallet') //TODO TABLE NAME
           .update({'balance': account.balance + value})
           .eq('id', account.id)
           .execute(); //TODO Error Handling
@@ -205,17 +205,17 @@ class WalletService {
   }) async {
     try {
       await DatabaseService.client
-          .from('beneficiary_accounts')
+          .from('wallet')
           .update({
             'balance': senderAccount.balance - value,
           })
           .eq('id', senderAccount.id)
           .execute() //TODO Error Handling
           .then((_) => DatabaseService.client
-              .from('beneficiary_accounts')
+              .from('wallet')
               .update({
                 'balance': recipientAccount.balance + value,
-                'last_trans': DateTime.now().millisecondsSinceEpoch
+                'last_transaction': DateTime.now().millisecondsSinceEpoch
               })
               .eq('id', recipientAccount.id)
               .execute()); //TODO Error Handing
@@ -236,7 +236,7 @@ class WalletService {
         throw InvalidInputException();
       } else {
         await DatabaseService.client
-            .from('beneficiary_accounts')
+            .from('wallet')
             .update({
               'balance': account.balance - value,
             })
@@ -435,10 +435,10 @@ class WalletService {
     //Changes the Users Account Status to processing.
     try {
       await DatabaseService.client
-          .from('beneficiary_accounts')
+          .from('wallet')
           .update({
             'status': 'processing',
-            'last_trans': DateTime.now().millisecondsSinceEpoch
+            'last_transaction': DateTime.now().millisecondsSinceEpoch
           })
           .eq('id', id)
           .execute();
@@ -467,7 +467,7 @@ class WalletService {
     //Changes the Users Account Status to normal.
     try {
       await DatabaseService.client
-          .from('beneficiary_accounts')
+          .from('wallet')
           .update({'status': 'normal'})
           .eq('id', id)
           .execute();
