@@ -25,7 +25,13 @@ class BlockchainService {
           .order('timestamp', ascending: false)
           .execute()
           .onError(
-            (error, stackTrace) => throw Exception('$error $stackTrace'),
+            (
+              error,
+              stackTrace,
+            ) =>
+                throw Exception(
+              '$error $stackTrace',
+            ),
           ); //TODO Stacktace
     } catch (e, trace) {
       print('lastBlock ${e.toString()} ${trace.toString()}');
@@ -102,6 +108,7 @@ class BlockchainService {
 
   Future<Block> mine() async {
     if (pendingTransactions.isEmpty) {
+      print('No Transactions Pending');
       // throw NoPendingTransactionException();
       //TODO IGNORE
     }
@@ -167,7 +174,7 @@ class BlockchainService {
     var response = await DatabaseService.client
         .from('blockchain')
         .select()
-        // .limit(1) //TODO Get The Whole Blockchain
+        .limit(3) //TODO Get The Whole Blockchain
         .order('index', ascending: true)
         .execute(); //TODO Error Handling
 
