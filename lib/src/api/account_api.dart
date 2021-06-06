@@ -34,6 +34,16 @@ class UserApi {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
             },
           );
+        } on AccountNotFoundException catch (e) {
+          return Response(
+            HttpStatus.notFound,
+            body: json.encode({
+              'data': {'message': e.toString()}
+            }),
+            headers: {
+              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+            },
+          );
         } on FormatException catch (e) {
           print('FormatException ${e.source} ${e.message}');
           return Response(
