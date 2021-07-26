@@ -10,7 +10,7 @@ export 'package:dotenv/dotenv.dart';
 export 'package:hive/hive.dart';
 export 'package:pedantic/pedantic.dart';
 export 'package:postgrest/postgrest.dart';
-export 'package:pubnub/pubnub.dart';
+export 'package:africas_talking/africas_talking.dart';
 export 'package:shelf_router/shelf_router.dart';
 export 'package:shelf/shelf_io.dart';
 export 'package:shelf/shelf.dart';

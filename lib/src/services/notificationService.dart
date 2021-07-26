@@ -76,20 +76,17 @@ class NotificationService {
     required String id,
     required Map message,
   }) async {
-    await _pubnub
-        .publish(id, {'content': message}).onError((error, stackTrace) {
+    africasTalking.isLive = false;
+
+    var sms = africasTalking.sms('67567');
+
+    await sms.send(
+        message: 'Dear Customer SMS Notification Test, ${message['message']}. ${message['amount']} ',
+        to: ['+********']).onError((error, stackTrace) {
       print(error);
-      throw NotImplementedException(); //TODO Handle Error
+      throw UnimplementedError(); //TODO Handle Error
     });
   }
 
-  static final _myKeyset = Keyset(
-    subscribeKey: Env.pnSubscribeKey!,
-    publishKey: Env.pnPublishKey,
-    uuid: UUID(
-      Env.systemAddress!,
-    ),
-  );
-
-  static final _pubnub = PubNub(defaultKeyset: _myKeyset);
+  static final africasTalking = AfricasTalking('sandbox', Env.africasTalking!);
 }

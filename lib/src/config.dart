@@ -17,6 +17,8 @@ class Env {
   /// Redis Cache Details PORT
   static final redisPort = env['REDIS_PORT'];
 
+  static final africasTalking = env['AFRICAS_TALKING'];
+
   /// Redis Cache Details Hostname
   static final redisHostname = env['REDIS_HOSTNAME'];
 
