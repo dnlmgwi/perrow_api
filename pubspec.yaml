@@ -11,6 +11,7 @@ dependencies:
   calc: ^0.2.1
   dart_date: ^1.1.0
   dart_jsonwebtoken: ^2.3.0
+  date_time_format: ^2.0.1
   dotenv: ^3.0.0
   enum_to_string: ^2.0.1
   geodesy: ^0.4.0-nullsafety.0
