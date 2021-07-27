@@ -1,7 +1,12 @@
+import 'package:perrow_api/src/api/moceanapi/mocean_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 class NotificationService {
+  static final africasTalking = AfricasTalking('sandbox', Env.africasTalking!);
+
+  final mocean = MoceanAPI();
+
   /// Send Nofication
   Future sendNotification(
     TransactionRecord transaction,
@@ -144,6 +149,4 @@ class NotificationService {
         DateTime.fromMillisecondsSinceEpoch(message['timestamp']),
         format: 'D, M j, H:i',
       );
-
-  static final africasTalking = AfricasTalking('sandbox', Env.africasTalking!);
 }

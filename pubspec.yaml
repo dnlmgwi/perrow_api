@@ -20,6 +20,7 @@ dependencies:
   hive: ^2.0.2
   jiffy: ^4.1.0
   json_annotation: ^4.1.0
+  # moceansdk: ^1.2.1
   postgrest: ^0.1.4
   realtime_client: ^0.1.4
   retry: ^3.1.0

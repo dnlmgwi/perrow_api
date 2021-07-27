@@ -4,11 +4,11 @@ import 'package:perrow_api/src/models/api/auth/user/login/loginRequestv2.dart';
 import 'package:perrow_api/src/services/auth/authService.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
 
-class AuthApiV2 {
+class AuthApi {
   String secret;
   AuthServiceV2 authService;
 
-  AuthApiV2({
+  AuthApi({
     required this.secret,
     required this.authService,
   });
