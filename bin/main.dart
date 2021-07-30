@@ -74,7 +74,7 @@ void main(List<String> args) async {
     '/v1/auth/',
     AuthApi(
       secret: Env.secret!,
-      authService: authServiceV2,
+      authService: authService,
     ).router,
   );
 

@@ -24,3 +24,5 @@ documentation/
 *.js_
 *.js.deps
 *.js.map
+lib/src/api/moceanapi/mocean_api.dart
+lib/src/api/moceanapi/mocean_api.dart

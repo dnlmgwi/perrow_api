@@ -1,11 +1,11 @@
-import 'package:perrow_api/src/api/moceanapi/mocean_api.dart';
+import 'package:perrow_api/src/api/twilio_api/twilio_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 class NotificationService {
   static final africasTalking = AfricasTalking('sandbox', Env.africasTalking!);
 
-  final mocean = MoceanAPI();
+  final mocean = TwilioAPI();
 
   /// Send Nofication
   Future sendNotification(
@@ -107,22 +107,44 @@ class NotificationService {
   //   });
   // }
 
-  Future<void> senderNotificationSMS(
-      {required String id,
-      required Map message,
-      required String phoneNumber}) async {
-    africasTalking.isLive = false;
+  Future<void> senderNotificationSMS({
+    required String id,
+    required Map message,
+    required String phoneNumber,
+  }) async {
+    // africasTalking.isLive = false;
 
-    var sms = africasTalking.sms('67567');
+    // var sms = africasTalking.sms('67567');
 
-    await sms.send(
-        message:
-            'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}',
-        to: ['+265997176756']).onError((error, stackTrace) {
+    ///SMS Notification
+    // await mocean
+    //     .sendSMS(
+    //         message:
+    //             'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+    //     .onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
+
+    await mocean
+        .sendWhatsApp(
+            message:
+                'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+        .onError((error, stackTrace) {
       //TODO Add Phone Number Variable
       print(error);
       throw UnimplementedError(); //TODO Handle Error
     });
+
+    // await sms.send(
+    //     message:
+    //         'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}',
+    //     to: ['+265997176756']).onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
   }
 
   Future<void> recipientNotificationSMS({
@@ -130,18 +152,37 @@ class NotificationService {
     required Map message,
     required String phoneNumber,
   }) async {
-    africasTalking.isLive = false;
-
-    var sms = africasTalking.sms('67567');
-
-    await sms.send(
-        message:
-            'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}',
-        to: ['+265997176756']).onError((error, stackTrace) {
+    ///SMS Nofitication
+    // await mocean
+    //     .sendSMS(
+    //         message:
+    //             'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+    //     .onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
+    await mocean
+        .sendWhatsApp(
+            message:
+                'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+        .onError((error, stackTrace) {
       //TODO Add Phone Number Variable
       print(error);
       throw UnimplementedError(); //TODO Handle Error
     });
+    // africasTalking.isLive = false;
+
+    // var sms = africasTalking.sms('67567');
+
+    // await sms.send(
+    //     message:
+    //         'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}',
+    //     to: ['+265997176756']).onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
   }
 
   String dateTimeReadable(Map<dynamic, dynamic> message) =>

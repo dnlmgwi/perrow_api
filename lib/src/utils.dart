@@ -4,9 +4,10 @@ import 'package:perrow_api/packages/perrow_api.dart';
 Middleware handleCors() {
   final corsHeaders = {
     ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+    ACCESS_CONTROL_ALLOW_CREDENTIALS: 'true',
     ACCESS_CONTROL_ALLOW_HEADERS: 'Origin, Content-Type',
     ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE',
-    'Content-Type': 'application/json;charset=utf-8'
+    HttpHeaders.contentTypeHeader: ContentType.json.mimeType
   };
 
   return createMiddleware(requestHandler: (Request request) {

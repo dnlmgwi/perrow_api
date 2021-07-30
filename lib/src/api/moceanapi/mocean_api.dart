@@ -1,15 +1,14 @@
-import 'dart:convert' as convert;
+// import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
+import 'package:perrow_api/packages/core.dart';
 
 class MoceanAPI {
-  
   Future<String> sendSMS({
-    required String phoneNumber,
     required String message,
   }) async {
     var decodedResponse;
-    var company = 'YourCompany';
+    var company = 'Qash';
 
     var url = Uri.https('rest.moceanapi.com', '/rest/2/sms', {'q': '{http}'});
 
@@ -17,17 +16,21 @@ class MoceanAPI {
 
     try {
       var response = await client.post(url, body: {
-        'mocean-api-key': 'API_KEY_HERE',
-        'mocean-api-secret': 'API_SECRET_HERE',
+        'mocean-api-key': '2dc85003',
+        'mocean-api-secret': '057a763d',
         'mocean-from': company,
-        'mocean-to': phoneNumber,
+        'mocean-to': '265997176756',
         'mocean-text': message,
+      }, headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+        HttpHeaders.acceptHeader: ContentType.json.mimeType,
       });
 
-      decodedResponse =
-          convert.jsonDecode(convert.utf8.decode(response.bodyBytes)) as Map;
-      var uri = Uri.parse(decodedResponse['uri'] as String);
-      print(await client.get(uri));
+      // decodedResponse = convert.jsonDecode(response.body) as Map;
+
+      print(response);
+    } catch (e) {
+      print('Mococean $e');
     } finally {
       client.close();
     }

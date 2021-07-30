@@ -20,7 +20,7 @@ final walletService = WalletService(
 /// Logout [Pending]
 /// Reset Passowrd [Unimplemented]
 
-final authServiceV2 = AuthServiceV2();
+final authService = AuthService();
 
 /// Blockchain Services
 final blockchainService = BlockchainService(

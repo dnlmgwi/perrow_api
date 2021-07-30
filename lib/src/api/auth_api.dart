@@ -6,7 +6,7 @@ import 'package:perrow_api/src/validators/auth_validation.dart';
 
 class AuthApi {
   String secret;
-  AuthServiceV2 authService;
+  AuthService authService;
 
   AuthApi({
     required this.secret,
