@@ -17,6 +17,8 @@ class Env {
   /// Redis Cache Details PORT
   static final redisPort = env['REDIS_PORT'];
 
+  static final africasTalking = env['AFRICAS_TALKING'];
+
   /// Redis Cache Details Hostname
   static final redisHostname = env['REDIS_HOSTNAME'];
 
@@ -67,4 +69,9 @@ class Env {
   static final mail_username = env['MAIL_USERNAME'];
   static final mail_password = env['MAIL_PASSWORD'];
   static final mail_port = env['MAIL_PORT'];
+
+  static final twilio_from = env['TWILIO_FROM'];
+  static final twilio_cred = env['CRED'];
+  static final twilio_account_sid = env['ACCOUNT_SID'];
+  static final twilio_to = env['TWILIO_TO'];
 }

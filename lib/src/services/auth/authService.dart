@@ -2,7 +2,7 @@ import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/errors/accountExceptions.dart';
 import 'package:supabase/supabase.dart';
 
-class AuthServiceV2 {
+class AuthService {
   Future<Session?> register({
     required String email,
     required String password,
@@ -13,7 +13,7 @@ class AuthServiceV2 {
 
       if (response.error != null) {
         // Error
-        print('Error: ${response.error?.message}');
+        throw InvalidInputException(response.error!.message);
       } else {
         // Success
         final session = response.data;
@@ -35,7 +35,6 @@ class AuthServiceV2 {
       );
 
       if (response.error != null) {
-        print('Error: ${response.error?.message}');
         throw InvalidInputException(response.error!.message);
       } else {
         // Success

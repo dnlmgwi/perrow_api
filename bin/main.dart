@@ -72,9 +72,9 @@ void main(List<String> args) async {
 
   app.mount(
     '/v1/auth/',
-    AuthApiV2(
+    AuthApi(
       secret: Env.secret!,
-      authService: authServiceV2,
+      authService: authService,
     ).router,
   );
 
