@@ -46,11 +46,17 @@ void main(List<String> args) async {
   /// Shelf Router
   var app = Router();
 
+  // optionally override default headers
+  final overrideHeaders = {
+    ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+    'Content-Type': 'application/json;charset=utf-8'
+  };
+
   var handler = Pipeline()
-      .addMiddleware(logRequests())
+      .addMiddleware(corsHeaders(headers: overrideHeaders))
       // .addMiddleware(cookieParser(Env.cookieKey!))
       // .addMiddleware(handleSession())
-      .addMiddleware(handleCors())
+      .addMiddleware(logRequests())
       .addMiddleware(handleAuth(
         secret: Env.secret!,
       ))
