@@ -2,12 +2,18 @@ import 'package:perrow_api/packages/perrow_api.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 Middleware handleCors() {
-  final corsHeaders = {
-    ACCESS_CONTROL_ALLOW_ORIGIN: '*',
-    ACCESS_CONTROL_ALLOW_CREDENTIALS: 'true',
-    ACCESS_CONTROL_ALLOW_HEADERS: 'Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale',
-    ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE,OPTIONS',
-    HttpHeaders.contentTypeHeader: ContentType.json.mimeType
+  // final corsHeaders = {
+  //   ACCESS_CONTROL_ALLOW_ORIGIN: '*',
+  //   ACCESS_CONTROL_ALLOW_CREDENTIALS: 'true',
+  //   ACCESS_CONTROL_ALLOW_HEADERS: 'Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale',
+  //   ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE,OPTIONS',
+  //   HttpHeaders.contentTypeHeader: ContentType.json.mimeType
+  // };
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS',
+    'Access-Control-Allow-Headers': '*',
   };
 
   return createMiddleware(requestHandler: (Request request) {

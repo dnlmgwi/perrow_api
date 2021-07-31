@@ -34,6 +34,7 @@ dependencies:
   uuid: ^3.0.3
   validators: ^3.0.0
   rate_limiter: ^0.1.1
+  shelf_cors_headers: ^0.1.1
 
 dev_dependencies:
   build_runner: ^1.12.2
