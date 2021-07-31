@@ -8,7 +8,7 @@ class StatusApi {
       final data = {
         'message': 'Perrow API',
         'status': 'Development',
-        'version': '0.1.0',
+        'version': '0.1.1',
       };
       return Response.ok(
         json.encode(data),

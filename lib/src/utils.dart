@@ -5,8 +5,8 @@ Middleware handleCors() {
   final corsHeaders = {
     ACCESS_CONTROL_ALLOW_ORIGIN: '*',
     ACCESS_CONTROL_ALLOW_CREDENTIALS: 'true',
-    ACCESS_CONTROL_ALLOW_HEADERS: 'Origin, Content-Type',
-    ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE',
+    ACCESS_CONTROL_ALLOW_HEADERS: 'Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale',
+    ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PUT, DELETE,OPTIONS',
     HttpHeaders.contentTypeHeader: ContentType.json.mimeType
   };
 
