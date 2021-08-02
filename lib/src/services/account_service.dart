@@ -67,9 +67,7 @@ class AccountService {
     var response = await DatabaseService.client //TODO Login with ID/PhoneNumber
         .from('transaction')
         .select()
-        .match({
-          'sender': id,
-        })
+        .or('sender.eq.$id,recipient.eq.$id')
         .limit(paginate ??= 10)
         .order('timestamp', ascending: false)
         .execute()
