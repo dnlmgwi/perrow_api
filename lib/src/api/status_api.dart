@@ -6,7 +6,7 @@ class StatusApi {
 
     router.get('/status', (Request request) {
       final data = {
-        'message': 'KOTG Token System',
+        'message': 'Token System',
         'status': 'Testing',
         'version': '0.1.3',
       };
