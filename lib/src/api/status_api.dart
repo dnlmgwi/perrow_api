@@ -6,9 +6,9 @@ class StatusApi {
 
     router.get('/status', (Request request) {
       final data = {
-        'message': 'Perrow API',
-        'status': 'Development',
-        'version': '0.1.2',
+        'message': 'KOTG Token System',
+        'status': 'Testing',
+        'version': '0.1.3',
       };
       return Response.ok(
         json.encode(data),
