@@ -1,6 +1,6 @@
 name: perrow_api
 description: A transaction record keeping server built using the shelf package.
-version: 0.1.2
+version: 0.1.3
 homepage: https://linkedin.com/in/danielmgawi/
 
 environment:
