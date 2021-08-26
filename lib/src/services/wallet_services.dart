@@ -1,7 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:hive/hive.dart';
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
 
 import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/validators/enumValues.dart';

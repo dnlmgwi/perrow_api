@@ -1,3 +1,4 @@
+import 'package:perrow_api/src/api/mailjet_api/mailjet_api.dart';
 import 'package:perrow_api/src/api/twilio_api/twilio_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
@@ -6,6 +7,7 @@ class NotificationService {
   static final africasTalking = AfricasTalking('sandbox', Env.africasTalking!);
 
   final mocean = TwilioAPI();
+  final mailJet = MailJetAPI();
 
   /// Send Nofication
   Future sendNotification(
@@ -127,15 +129,15 @@ class NotificationService {
     //   throw UnimplementedError(); //TODO Handle Error
     // });
 
-    await mocean
-        .sendWhatsApp(
-            message:
-                'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
-        .onError((error, stackTrace) {
-      //TODO Add Phone Number Variable
-      print(error);
-      throw UnimplementedError(); //TODO Handle Error
-    });
+    // await mocean
+    //     .sendWhatsApp(
+    //         message:
+    //             'Dear customer ${message['message']}, ${message['amount']} to $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+    //     .onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
 
     // await sms.send(
     //     message:
@@ -145,6 +147,20 @@ class NotificationService {
     //   print(error);
     //   throw UnimplementedError(); //TODO Handle Error
     // });
+    await mailJet
+        .sendEmail(
+            transactionMessage: 'To $id',
+            toAddress: 'pdmgawi@gmail.com',
+            toName: 'User 1',
+            subject: message['message'],
+            date: dateTimeReadable(message),
+            amount: message['amount'],
+            ref: message['trans_id'])
+        .onError((error, stackTrace) {
+      //TODO Add Phone Number Variable
+      print(error);
+      throw UnimplementedError(); //TODO Handle Error
+    });
   }
 
   Future<void> recipientNotificationSMS({
@@ -162,15 +178,15 @@ class NotificationService {
     //   print(error);
     //   throw UnimplementedError(); //TODO Handle Error
     // });
-    await mocean
-        .sendWhatsApp(
-            message:
-                'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
-        .onError((error, stackTrace) {
-      //TODO Add Phone Number Variable
-      print(error);
-      throw UnimplementedError(); //TODO Handle Error
-    });
+    // await mocean
+    //     .sendWhatsApp(
+    //         message:
+    //             'Dear customer ${message['message']}, ${message['amount']} from $id on ${dateTimeReadable(message)}. Ref: ${message['trans_id']}')
+    //     .onError((error, stackTrace) {
+    //   //TODO Add Phone Number Variable
+    //   print(error);
+    //   throw UnimplementedError(); //TODO Handle Error
+    // });
     // africasTalking.isLive = false;
 
     // var sms = africasTalking.sms('67567');
@@ -183,6 +199,21 @@ class NotificationService {
     //   print(error);
     //   throw UnimplementedError(); //TODO Handle Error
     // });
+
+    await mailJet
+        .sendEmail(
+            transactionMessage: 'From $id',
+            toAddress: 'pdmgawi@gmail.com',
+            toName: 'User 1',
+            subject: message['message'],
+            date: dateTimeReadable(message),
+            amount: message['amount'],
+            ref: message['trans_id'])
+        .onError((error, stackTrace) {
+      //TODO Add Phone Number Variable
+      print(error);
+      throw UnimplementedError(); //TODO Handle Error
+    });
   }
 
   String dateTimeReadable(Map<dynamic, dynamic> message) =>

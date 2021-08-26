@@ -1,5 +1,5 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/services/blockchainService.dart';
+import 'package:perrow_api/src/services/blockchain_service.dart';
 
 class BlockChainValidationService {
   static bool isFirstBlockValid({

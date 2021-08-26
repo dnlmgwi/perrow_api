@@ -10,7 +10,7 @@ class UserActivityService {
     double endLng, {
     required int timeInMin,
     required double weight,
-    required double MET,
+    required double met,
   }) {
     var distanceInMeters =
         distanceTraveledInMeters(startLat, startLng, endLat, endLng);
@@ -20,7 +20,7 @@ class UserActivityService {
       'distance': distanceInMeters,
       'calories': _calories(
         weight: weight,
-        MET: MET,
+        met: met,
       )
     };
     return activityStats;
@@ -63,13 +63,13 @@ class UserActivityService {
 
   double _calories({
     required double weight,
-    required double MET,
+    required double met,
   }) {
     //Activity Calories Burned Calculator per minute
     //Compendium of Physical Activities
     //know the MET value of a particular activity
     //Suggest Foods to suppliment the user based off Activites
     //The formula to use is: METs x 3.5 x (your body weight in kilograms) / 200 = calories burned per minute.
-    return MET * 3.5 * (weight / 200);
+    return met * 3.5 * (weight / 200);
   }
 }

@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:perrow_api/packages/core.dart';
 
 class MoceanAPI {
-  Future<String> sendSMS({
+  Future<String?> sendSMS({
     required String message,
   }) async {
-    var decodedResponse;
+    String? decodedResponse;
     var company = 'Qash';
 
     var url = Uri.https('rest.moceanapi.com', '/rest/2/sms', {'q': '{http}'});

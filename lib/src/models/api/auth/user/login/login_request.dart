@@ -1,22 +1,23 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'loginRequestv2.g.dart';
+part 'loginRequest.g.dart';
 
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
-class LoginRequestV2 {
+class LoginRequest {
   late final String? email;
   late final String? password;
+  late final String? phone;
 
-  LoginRequestV2({
+  LoginRequest({
     required this.email,
     required this.password,
-    // required this.phoneNumber,
+    required this.phone,
   });
 
-  factory LoginRequestV2.fromJson(Map<String, dynamic> json) =>
-      _$LoginRequestV2FromJson(json);
+  factory LoginRequest.fromJson(Map<String, dynamic> json) =>
+      _$LoginRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginRequestV2ToJson(this);
+  Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
 }

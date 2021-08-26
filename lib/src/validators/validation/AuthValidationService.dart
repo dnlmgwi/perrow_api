@@ -1,7 +1,7 @@
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/packages/services.dart';
-import 'package:perrow_api/src/errors/authExceptions.dart';
+import 'package:perrow_api/src/errors/auth_exceptions.dart';
 
 class AuthValidationService {
   static Future<Account> fetchUserAccountDetails({required String id}) async {

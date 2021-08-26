@@ -9,11 +9,11 @@ class TwilioAPI {
     required String message,
   }) async {
 
-    //Twilio Credentials
-    var accountSid = Env.twilio_account_sid!;
-    var cred = Env.twilio_cred!;
-    var to = Env.twilio_to!;
-    var from = Env.twilio_from!;
+    ///Twilio Credentials
+    var accountSid = Env.twilioAccountSid!;
+    var cred = Env.twilioCred!;
+    var to = Env.twilioTo!;
+    var from = Env.twilioFrom!;
 
     var url = Uri.https('api.twilio.com',
         '/2010-04-01/Accounts/$accountSid/Messages.json', {'q': '{http}'});

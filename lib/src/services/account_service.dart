@@ -1,9 +1,9 @@
-import 'package:perrow_api/src/errors/accountExceptions.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 class AccountService {
   Future<TransAccount> findAccountDetails({required String id}) async {
-    var response;
+    PostgrestResponse response;
     try {
       response = await DatabaseService.client
           .from('wallet')
@@ -14,6 +14,7 @@ class AccountService {
         'id': id,
       }).execute();
     } catch (exception, stackTrace) {
+      //TODO Handle Errors
       // await Sentry.captureException(
       //   exception,
       //   stackTrace: stackTrace,

@@ -1,6 +1,6 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/models/api/blockchain/transferRequest.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
+import 'package:perrow_api/src/models/api/blockchain/transfer_request.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/account_responses.dart';
 import 'package:perrow_api/src/validators/account_validation.dart';
@@ -103,7 +103,7 @@ class WalletApi {
           return Response(
             HttpStatus.forbidden,
             body: json.encode({
-              'data': {'message': '${e.toString()}'}
+              'data': {'message': '$e'}
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

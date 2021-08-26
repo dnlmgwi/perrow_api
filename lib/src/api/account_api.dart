@@ -1,5 +1,5 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/validation/AuthValidationService.dart';
 
@@ -21,6 +21,7 @@ class UserApi {
         Request request,
       ) async {
         try {
+          
           final authDetails = request.context['authDetails'] as JWT;
           final user = await AuthValidationService.fetchUserAccountDetails(
             id: authDetails.subject.toString(),
