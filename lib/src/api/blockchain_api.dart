@@ -1,6 +1,6 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:perrow_api/src/validators/validation/blockchainValidationService.dart';
+import 'package:perrow_api/src/validators/validation/blockchain_validation_service.dart';
 import 'package:perrow_api/packages/dependencies.dart';
 
 class BlockChainApi {

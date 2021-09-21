@@ -1,9 +1,9 @@
-import 'package:perrow_api/src/errors/accountExceptions.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 class AccountService {
-  Future<TransAccount> findAccountDetails({required String id}) async {
-    var response;
+  Future<TransAccount> findAccountDetails({required int id}) async {
+    PostgrestResponse response;
     try {
       response = await DatabaseService.client
           .from('wallet')
@@ -14,6 +14,7 @@ class AccountService {
         'id': id,
       }).execute();
     } catch (exception, stackTrace) {
+      //TODO Handle Errors
       // await Sentry.captureException(
       //   exception,
       //   stackTrace: stackTrace,
@@ -33,7 +34,7 @@ class AccountService {
 
   Future<TransAccount> findRecipientDepositAccount(
       {required String phoneNumber}) async {
-    var response;
+    PostgrestResponse? response;
     try {
       response = await DatabaseService.client
           .from('wallet') //TODO Change Lookup Table
@@ -50,7 +51,7 @@ class AccountService {
       // ); //TODO Handle Errors
     }
 
-    var result = response.data as List;
+    var result = response!.data as List;
 
     if (result.isEmpty) {
       throw AccountNotFoundException();
@@ -60,7 +61,7 @@ class AccountService {
   }
 
   static Future<List<TransactionRecord>> fetchUserTransactions(
-      {required String id, int? paginate}) async {
+      {required int id, int? paginate}) async {
     //Todo Handling
     var jsonTransactions = <TransactionRecord>[];
 

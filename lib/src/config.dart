@@ -62,16 +62,20 @@ class Env {
   static final newAccountBalance = env['NEW_ACCOUNT_BALANCE'];
 
   ///Mail Server
+  static final mailHost = env['MAIL_HOST'];
+  static final mailFromAddress = env['MAIL_FROM_ADDRESS'];
+  static final mailFromName = env['MAIL_FROM_NAME'];
+  static final mailUsername = env['MAIL_USERNAME'];
+  static final mailPassword = env['MAIL_PASSWORD'];
+  static final mailPort = env['MAIL_PORT'];
 
-  static final mail_host = env['MAIL_HOST'];
-  static final mail_from_address = env['MAIL_FROM_ADDRESS'];
-  static final mail_from_name = env['MAIL_FROM_NAME'];
-  static final mail_username = env['MAIL_USERNAME'];
-  static final mail_password = env['MAIL_PASSWORD'];
-  static final mail_port = env['MAIL_PORT'];
+  ///Twilio Api
+  static final twilioFrom = env['TWILIO_FROM'];
+  static final twilioCred = env['CRED'];
+  static final twilioAccountSid = env['ACCOUNT_SID'];
+  static final twilioTo = env['TWILIO_TO'];
 
-  static final twilio_from = env['TWILIO_FROM'];
-  static final twilio_cred = env['CRED'];
-  static final twilio_account_sid = env['ACCOUNT_SID'];
-  static final twilio_to = env['TWILIO_TO'];
+  ///MailJet
+  static final mailjetUser = env['MAIL_JET_USER'];
+  static final mailjetKey = env['MAIL_JET_KEY'];
 }

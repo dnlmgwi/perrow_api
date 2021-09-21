@@ -82,7 +82,8 @@ Middleware handleAuth({required String secret}) {
   return (Handler innerhandler) {
     return (Request request) async {
       final authHeader = request.headers['authorization'];
-      var token, jwt;
+      String token;
+      var jwt;
 
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
         token = authHeader.substring(7);

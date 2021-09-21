@@ -1,6 +1,6 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/models/api/blockchain/transferRequest.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
+import 'package:perrow_api/src/models/api/blockchain/transfer_request.dart';
 import 'package:perrow_api/src/utils.dart';
 import 'package:perrow_api/src/validators/account_responses.dart';
 import 'package:perrow_api/src/validators/account_validation.dart';
@@ -28,7 +28,7 @@ class WalletApi {
           final authDetails = request.context['authDetails'] as JWT;
 
           final user = await _accountService.findAccountDetails(
-            id: authDetails.subject.toString(),
+            id: authDetails.payload['id'],
           );
 
           var data = TransferRequest.fromJson(
@@ -39,8 +39,7 @@ class WalletApi {
             amount: data.amount,
           );
 
-          if (AccountApiValidation.recipientCheck(data.id!) &&
-              !isUUID(data.id)) {
+          if (AccountApiValidation.recipientCheck(data.id!.toString())) {
             return Response.forbidden(
               AccountApiResponses.recipientError(),
               headers: {
@@ -58,8 +57,8 @@ class WalletApi {
             );
           }
 
-          await walletService.initiateTransfer(
-            senderid: user.id,
+          var transId = await walletService.initiateTransfer(
+            senderid: user.id!,
             recipientid: data.id!,
             amount: data.amount!,
           );
@@ -69,6 +68,7 @@ class WalletApi {
               'data': {
                 'message': 'Transaction Pending',
                 'balance': user.balance - data.amount!,
+                'trans_id': transId,
                 'transaction': data.toJson(),
               }
             }),
@@ -103,7 +103,7 @@ class WalletApi {
           return Response(
             HttpStatus.forbidden,
             body: json.encode({
-              'data': {'message': '${e.toString()}'}
+              'data': {'message': '$e'}
             }),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,

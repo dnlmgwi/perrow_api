@@ -1,5 +1,5 @@
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
 
 class AccountApiValidation {
   //Check if the correct Keys Where Provided in the request if null prompt the user on what to provide.
@@ -22,4 +22,6 @@ class AccountApiValidation {
 
   //Is Recipient Provided
   static bool recipientCheck(String data) => data == '' || data.isEmpty;
+
+  static bool phoneNumberCheck(String data) => data == '' || data.isEmpty;
 }

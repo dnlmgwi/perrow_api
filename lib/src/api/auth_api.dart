@@ -1,7 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/errors/accountExceptions.dart';
-import 'package:perrow_api/src/models/api/auth/user/login/loginRequestv2.dart';
-import 'package:perrow_api/src/services/auth/authService.dart';
+import 'package:perrow_api/src/errors/account_exceptions.dart';
+import 'package:perrow_api/src/models/api/auth/user/login/login_request.dart';
+import 'package:perrow_api/src/services/auth/auth_service.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
 
 class AuthApi {
@@ -22,8 +22,8 @@ class AuthApi {
         Request request,
       ) async {
         try {
-          var payload = LoginRequestV2.fromJson(
-              json.decode(await request.readAsString()));
+          var payload =
+              LoginRequest.fromJson(json.decode(await request.readAsString()));
 
           if (AuthApiValidation.inputNullCheck(payload.password)) {
             //Todo: Input Validation Errors
@@ -111,8 +111,8 @@ class AuthApi {
         Request request,
       ) async {
         try {
-          var payload = LoginRequestV2.fromJson(
-              json.decode(await request.readAsString()));
+          var payload =
+              LoginRequest.fromJson(json.decode(await request.readAsString()));
 
           if (AuthApiValidation.inputNullCheck(payload.password)) {
             //Todo: Input Validation Errors
@@ -129,7 +129,8 @@ class AuthApi {
             );
           }
 
-          if (AuthApiValidation.inputNullCheck(payload.email)) {
+          if (AuthApiValidation.inputNullCheck(payload.email) &&
+              AuthApiValidation.inputNullCheck(payload.phone)) {
             //Todo: Input Validation Errors
             return Response(
               HttpStatus.badRequest,
@@ -145,8 +146,9 @@ class AuthApi {
           }
 
           final session = await authService.register(
-            email: payload.email!,
-            password: payload.password!,
+            payload.password!,
+            email: payload.email ?? '',
+            phone: payload.phone ?? '',
           );
 
           return Response.ok(

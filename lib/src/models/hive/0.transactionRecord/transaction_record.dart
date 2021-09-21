@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'transactionRecord.g.dart';
+part 'transaction_record.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 0)

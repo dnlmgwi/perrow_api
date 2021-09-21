@@ -16,7 +16,7 @@ class BlockchainService {
   });
 
   Future<Block> get getLastBlock async {
-    var response;
+    PostgrestResponse response;
     try {
       response = await DatabaseService.client
           .from('blockchain')
@@ -37,7 +37,7 @@ class BlockchainService {
       print('lastBlock ${e.toString()} ${trace.toString()}');
       rethrow;
     }
-    ;
+
     return Block.fromJson(response.data[0]);
   }
 
