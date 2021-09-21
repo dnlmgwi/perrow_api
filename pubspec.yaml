@@ -16,6 +16,7 @@ dependencies:
   enum_to_string: ^2.0.1
   geodesy: ^0.4.0-nullsafety.0
   hex: ^0.2.0
+  pedantic: ^1.11.1
   hive_generator: ^1.0.1
   hive: ^2.0.2
   jiffy: ^4.1.0

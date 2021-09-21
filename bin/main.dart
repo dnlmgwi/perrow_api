@@ -3,7 +3,7 @@ import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'dart:async';
+import 'package:pedantic/pedantic.dart';
 // import 'package:retry/retry.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
