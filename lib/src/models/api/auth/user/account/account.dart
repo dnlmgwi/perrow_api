@@ -12,7 +12,7 @@ class Account {
   int balance;
 
   @JsonKey(name: 'phone_number')
-  String phoneNumber;
+  String? phoneNumber;
 
   @JsonKey(name: 'created_at')
   late DateTime? createdAt;
@@ -28,7 +28,7 @@ class Account {
 
   Account({
     this.id,
-    required this.phoneNumber,
+    this.phoneNumber,
     required this.status,
     required this.balance,
     required this.joinedDate,

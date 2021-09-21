@@ -102,7 +102,6 @@ class AuthValidationService {
             .from('wallet')
             .insert(Account(
               id: id,
-              phoneNumber: phoneNumber!,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
               status: 'normal',
