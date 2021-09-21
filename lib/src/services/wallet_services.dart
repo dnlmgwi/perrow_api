@@ -10,11 +10,11 @@ import 'package:uuid/uuid.dart';
 
 class WalletService {
   AccountService accountService;
-  NotificationService notificationService;
+  // NotificationService notificationService;
 
   WalletService({
     required this.accountService,
-    required this.notificationService,
+    // required this.notificationService,
   });
 
   var pendingTransactions = Hive.box<TransactionRecord>('transactions');
