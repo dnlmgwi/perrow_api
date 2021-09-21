@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'rechargeNotification.g.dart';
+part 'recharge_notification.g.dart';
 
 @HiveType(typeId: 1)
 @JsonSerializable()

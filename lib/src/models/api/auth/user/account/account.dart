@@ -5,11 +5,20 @@ part 'account.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class Account {
-  String? id;
+  int? id;
 
   String status;
 
   int balance;
+
+  @JsonKey(name: 'phone_number')
+  String phoneNumber;
+
+  @JsonKey(name: 'created_at')
+  late DateTime? createdAt;
+
+  @JsonKey(name: 'updated_at')
+  late DateTime? updatedAt;
 
   @JsonKey(name: 'joined_date')
   int joinedDate;
@@ -19,9 +28,12 @@ class Account {
 
   Account({
     this.id,
+    required this.phoneNumber,
     required this.status,
     required this.balance,
     required this.joinedDate,
+    this.createdAt,
+    this.updatedAt,
     this.lastTransaction,
   });
 

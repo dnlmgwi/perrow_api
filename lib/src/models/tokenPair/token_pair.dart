@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'tokenPair.g.dart';
+part 'token_pair.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TokenPair extends HiveObject {

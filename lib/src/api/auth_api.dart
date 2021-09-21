@@ -1,7 +1,7 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/src/models/api/auth/user/login/login_request.dart';
-import 'package:perrow_api/src/services/auth/authService.dart';
+import 'package:perrow_api/src/services/auth/auth_service.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
 
 class AuthApi {

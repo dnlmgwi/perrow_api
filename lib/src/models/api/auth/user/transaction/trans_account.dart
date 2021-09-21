@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'transAccount.g.dart';
+part 'trans_account.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TransAccount {
-  String? id;
+  int? id;
 
   String status;
 

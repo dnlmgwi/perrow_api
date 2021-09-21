@@ -8,7 +8,7 @@ class StatusApi {
       final data = {
         'message': 'Token System',
         'status': 'Testing',
-        'version': '0.1.3',
+        'version': '0.1.4',
       };
       return Response.ok(
         json.encode(data),

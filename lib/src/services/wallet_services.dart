@@ -4,7 +4,7 @@ import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/errors/account_exceptions.dart';
 
 import 'package:perrow_api/packages/services.dart';
-import 'package:perrow_api/src/validators/enumValues.dart';
+import 'package:perrow_api/src/validators/enum_values.dart';
 import 'package:postgrest/postgrest.dart';
 import 'package:uuid/uuid.dart';
 
@@ -55,8 +55,8 @@ class WalletService {
               if (response.error != null) {
                 throw Exception(response.error!.message);
               }
-              await notificationService.sendNotification(transaction,
-                  response); //TODO Enable Only When in Development Env.
+              // await notificationService.sendNotification(transaction,
+              //     response); //TODO Enable Only When in Development Env.
             }).whenComplete(
               //Every Transaction is Proccessed and Removed from the List
               () => transaction.delete(),
@@ -91,7 +91,7 @@ class WalletService {
   Future<void> depositProcess(TransactionRecord element) async {
     try {
       var foundAccount = await accountService.findAccountDetails(
-        id: element.recipient,
+        id: int.parse(element.recipient),
       );
 
       await editAccountBalance(
@@ -106,8 +106,8 @@ class WalletService {
 
   Future<void> withdrawProcess(TransactionRecord element) async {
     try {
-      var foundAccount =
-          await accountService.findAccountDetails(id: element.sender);
+      var foundAccount = await accountService.findAccountDetails(
+          id: int.parse(element.sender));
 
       await editAccountBalance(
           senderAccount: foundAccount,
@@ -122,11 +122,11 @@ class WalletService {
   Future<void> transferProcess(TransactionRecord element) async {
     try {
       var recipientAccount = await accountService.findAccountDetails(
-        id: element.recipient,
+        id: int.parse(element.recipient),
       );
 
       var senderAccount = await accountService.findAccountDetails(
-        id: element.sender,
+        id: int.parse(element.sender),
       );
 
       /// Edit User Account Balance
@@ -283,7 +283,7 @@ class WalletService {
         await accountService
             .findRecipientDepositAccount(phoneNumber: item.phoneNumber)
             .then((account) => addToPendingDeposit(
-                    item.transID, account.id!, extractMKAmount(item))
+                    item.transID, account.id!.toString(), extractMKAmount(item))
                 .then((_) => changeClaimToTrue(item.transID))
                 .then((_) => changeAccountStatusToProcessing(account.id!))
                 .then((_) => item.delete()));
@@ -296,22 +296,23 @@ class WalletService {
   int extractMKAmount(RechargeNotification item) =>
       int.parse(item.amount.toString().split('MK').last);
 
-  Future<void> initiateTransfer({
-    required String? senderid,
-    required String recipientid,
+  Future<String> initiateTransfer({
+    required int senderid,
+    required int recipientid,
     required int amount,
   }) async {
+    var transId = Uuid().v4();
     if (senderid == recipientid) {
       //Prevents User from Sending Points To Self Compounding Account Balance.
       throw SelfTransferException();
     }
     //Check if the sender & recipient are in the system
-    if (await recipientValidation(recipientid)) {
+    if (await recipientValidation(recipientid.toString())) {
       try {
         await checkAccountBalance(
             value: amount,
             account: await accountService.findAccountDetails(
-              id: senderid!,
+              id: senderid,
             ));
       } catch (exeption, stacktrace) {
         rethrow; //TODO Handle Error
@@ -321,10 +322,7 @@ class WalletService {
         senderid,
       )) {
         addToPendingTransfer(
-          senderid,
-          recipientid,
-          amount,
-        );
+            senderid.toString(), recipientid.toString(), amount, transId);
 
         await changeAccountStatusToProcessing(
           senderid,
@@ -333,6 +331,7 @@ class WalletService {
         throw PendingTransactionException();
       }
     }
+    return transId;
   }
 
   Future addToPendingDeposit(
@@ -358,6 +357,7 @@ class WalletService {
     String sender,
     String recipient,
     int amount,
+    String transId,
   ) async {
     /// Edit User Account Balance
     /// String id - User Perrow API id
@@ -368,7 +368,7 @@ class WalletService {
       recipient: recipient,
       amount: amount,
       timestamp: DateTime.now().millisecondsSinceEpoch,
-      transId: Uuid().v4(),
+      transId: transId,
       transType: TransactionType.withdraw.index,
     ));
   }
@@ -377,6 +377,7 @@ class WalletService {
     String sender,
     String recipient,
     int amount,
+    String transId,
   ) async {
     //Allows users to transfer points between each other
     /// String transactionType - 0: Withdraw, 1: Deposit, 2: Transfer
@@ -385,14 +386,14 @@ class WalletService {
       recipient: recipient,
       amount: amount,
       timestamp: DateTime.now().millisecondsSinceEpoch,
-      transId: Uuid().v4(),
+      transId: transId,
       transType: TransactionType
           .transfer.index, //TODO: Change 0 and 1 to Deposit and Withdaw;
     ));
   }
 
   Future<bool> accountStatusCheck(
-    String sender,
+    int sender,
   ) async {
     var foundAccount = await accountService.findAccountDetails(
       id: sender,
@@ -408,12 +409,12 @@ class WalletService {
 
     try {
       var recipientAccount = await accountService.findAccountDetails(
-        id: recipient,
+        id: int.parse(recipient),
       );
 
       //TODO: If Recent Transaction was made throw please wait x minutes
 
-      if (recipientAccount.id!.isNotEmpty) {
+      if (recipientAccount.id!.toString().isNotEmpty) {
         //if the Account Server return an account it is a valid account
         accountValid = true;
       } else {
@@ -430,7 +431,7 @@ class WalletService {
   }
 
   Future<void> changeAccountStatusToProcessing(
-    String id,
+    int id,
   ) async {
     //Changes the Users Account Status to processing.
     try {
@@ -462,7 +463,7 @@ class WalletService {
   }
 
   Future<void> changeAccountStatusNormal(
-    String id,
+    int id,
   ) async {
     //Changes the Users Account Status to normal.
     try {

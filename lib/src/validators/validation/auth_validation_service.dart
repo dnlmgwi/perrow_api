@@ -4,8 +4,11 @@ import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/errors/auth_exceptions.dart';
 
 class AuthValidationService {
-  static Future<Account> fetchUserAccountDetails({required String id}) async {
-    var response;
+  static Future<Account> fetchUserAccountDetails({
+    required int id,
+    required String phoneNumber,
+  }) async {
+    PostgrestResponse response;
 
     response = await DatabaseService.client //TODO Login with ID/PhoneNumber
         .from('wallet')
@@ -18,10 +21,10 @@ class AuthValidationService {
           (error, stackTrace) => throw Exception(error),
         );
 
-    var result = response.data as List;
+    var result = response.data as List; //TODO Change ID to INT
 
     if (result.isEmpty) {
-      response = await register(id: id);
+      response = await register(id: id, phoneNumber: phoneNumber);
     }
 
     // print(response.data[0]);
@@ -30,7 +33,7 @@ class AuthValidationService {
   }
 
   static Future findDuplicateAccountCredentials({
-    required String id,
+    required int id,
   }) async {
     try {
       var response = await DatabaseService.client
@@ -38,7 +41,7 @@ class AuthValidationService {
           .select('id')
           .eq(
             'id',
-            '$id',
+            id,
           )
           .execute()
           .onError(
@@ -65,7 +68,7 @@ class AuthValidationService {
   }
 
   static Future<bool> isDuplicatedAccount({
-    required String id,
+    required int id,
   }) async {
     var duplicateAccount = false;
     try {
@@ -83,10 +86,11 @@ class AuthValidationService {
   }
 
   static Future register({
-    required String id,
+    required int id,
+    required String phoneNumber,
   }) async {
     try {
-      var response;
+      var response = PostgrestResponse();
       var isDuplicate = await AuthValidationService.isDuplicatedAccount(
         id: id,
       );
@@ -95,6 +99,9 @@ class AuthValidationService {
             .from('wallet')
             .insert(Account(
               id: id,
+              phoneNumber: phoneNumber,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
               status: 'normal',
               balance: int.parse(Env.newAccountBalance!),
               joinedDate: DateTime.now().millisecondsSinceEpoch,

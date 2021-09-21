@@ -22,4 +22,6 @@ class AccountApiValidation {
 
   //Is Recipient Provided
   static bool recipientCheck(String data) => data == '' || data.isEmpty;
+
+  static bool phoneNumberCheck(String data) => data == '' || data.isEmpty;
 }

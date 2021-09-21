@@ -1,6 +1,6 @@
 library perrow_api_services;
 
-export 'package:perrow_api/src/services/auth/authService.dart';
+export 'package:perrow_api/src/services/auth/auth_service.dart';
 export 'package:perrow_api/src/services/account_service.dart';
 export 'package:perrow_api/src/services/automated_tasks.dart';
 export 'package:perrow_api/src/services/wallet_services.dart';

@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'transferRequest.g.dart';
+part 'transfer_request.g.dart';
 
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class TransferRequest {
-  late String? id;
+  late int? id;
 
   late int? amount;
 

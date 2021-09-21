@@ -1,7 +1,7 @@
 
 
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/services/auth/authService.dart';
+import 'package:perrow_api/src/services/auth/auth_service.dart';
 
 /// Start Redis Token Service
 // final tokenService = TokenService();
