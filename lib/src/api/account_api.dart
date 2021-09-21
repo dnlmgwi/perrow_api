@@ -1,7 +1,6 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:perrow_api/src/validators/account_validation.dart';
 import 'package:perrow_api/src/validators/validation/auth_validation_service.dart';
 
 class UserApi {
@@ -21,29 +20,30 @@ class UserApi {
       ((
         Request request,
       ) async {
-        var payload = json.decode(await request.readAsString());
+        // var payload = json.decode(await request.readAsString());
 
-        if (AccountApiValidation.phoneNumberCheck(payload['phone_number'])) {
-          //Todo: Input Validation Errors
-          return Response(
-            HttpStatus.badRequest,
-            body: json.encode({
-              'data': {
-                'message': InvalidInputException('Please Provide Phone Number')
-                    .toString(),
-              }
-            }),
-            headers: {
-              HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
-            },
-          );
-        }
+        // if (AccountApiValidation.phoneNumberCheck(payload['phone_number'])) {
+        //   //Todo: Input Validation Errors
+        //   return Response(
+        //     HttpStatus.badRequest,
+        //     body: json.encode({
+        //       'data': {
+        //         'message': InvalidInputException('Please Provide Phone Number')
+        //             .toString(),
+        //       }
+        //     }),
+        //     headers: {
+        //       HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
+        //     },
+        //   );
+        // }
         try {
           final authDetails = request.context['authDetails'] as JWT; //as JWT;
 
           final user = await AuthValidationService.fetchUserAccountDetails(
-              id: authDetails.payload['id'],
-              phoneNumber: payload['phone_number']);
+            id: authDetails.payload['id'],
+            // phoneNumber: payload['phone_number'],
+          );
 
           return Response.ok(
             json.encode({

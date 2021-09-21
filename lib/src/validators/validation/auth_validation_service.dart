@@ -6,7 +6,7 @@ import 'package:perrow_api/src/errors/auth_exceptions.dart';
 class AuthValidationService {
   static Future<Account> fetchUserAccountDetails({
     required int id,
-    required String phoneNumber,
+    // required String phoneNumber,
   }) async {
     PostgrestResponse response;
 
@@ -24,7 +24,10 @@ class AuthValidationService {
     var result = response.data as List; //TODO Change ID to INT
 
     if (result.isEmpty) {
-      response = await register(id: id, phoneNumber: phoneNumber);
+      response = await register(
+        id: id,
+        // phoneNumber: phoneNumber,
+      );
     }
 
     // print(response.data[0]);
@@ -87,7 +90,7 @@ class AuthValidationService {
 
   static Future register({
     required int id,
-    required String phoneNumber,
+    String? phoneNumber,
   }) async {
     try {
       var response = PostgrestResponse();
@@ -99,7 +102,7 @@ class AuthValidationService {
             .from('wallet')
             .insert(Account(
               id: id,
-              phoneNumber: phoneNumber,
+              phoneNumber: phoneNumber!,
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
               status: 'normal',
