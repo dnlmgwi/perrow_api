@@ -84,7 +84,7 @@ Middleware handleAuth({required String secret}) {
     return (Request request) async {
       final authHeader = request.headers['authorization'];
       String token;
-      late JWT jwt;
+      JWT? jwt;
 
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
         token = authHeader.substring(7);

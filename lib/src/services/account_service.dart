@@ -14,13 +14,12 @@ class AccountService {
         'id': id,
       }).execute();
     } catch (exception, stackTrace) {
-      //TODO Handle Errors
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
-      //TODO: Handle Errors
-      throw Exception(exception);
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+
+      rethrow;
     }
 
     var result = response.data as List;
@@ -45,10 +44,10 @@ class AccountService {
         'phoneNumber': phoneNumber,
       }).execute();
     } catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // ); //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
     }
 
     var result = response!.data as List;
@@ -65,18 +64,27 @@ class AccountService {
     //Todo Handling
     var jsonTransactions = <TransactionRecord>[];
 
-    var response = await DatabaseService.client //TODO Login with ID/PhoneNumber
-        .from('transaction')
-        .select()
-        .or('sender.eq.$id,recipient.eq.$id')
-        .limit(paginate ??= 10)
-        .order('timestamp', ascending: false)
-        .execute()
-        .onError(
-          (error, stackTrace) => throw Exception(error),
-        );
+    PostgrestResponse? response;
 
-    var result = response.data as List;
+    try {
+      response = await DatabaseService.client //TODO Login with ID/PhoneNumber
+          .from('transaction')
+          .select()
+          .or('sender.eq.$id,recipient.eq.$id')
+          .limit(paginate ??= 10)
+          .order('timestamp', ascending: false)
+          .execute()
+          .onError(
+            (error, stackTrace) => throw Exception(error),
+          );
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+    }
+
+    var result = response!.data as List;
 
     if (result.isEmpty) {
       throw TransactionsNotFoundException();

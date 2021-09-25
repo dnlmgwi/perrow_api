@@ -41,11 +41,10 @@ class AutomatedTasks {
       await blockchainService.mine();
       print('Processing Payments');
     } catch (exception, stackTrace) {
-      //TODO Handle Errors
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // ); //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -81,10 +80,10 @@ class AutomatedTasks {
         }
       }
     } catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       //Todo handle Erros
       rethrow;
     }

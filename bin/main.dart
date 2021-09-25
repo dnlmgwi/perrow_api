@@ -4,7 +4,6 @@ import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
-import 'package:sentry/sentry.dart';
 // import 'package:retry/retry.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
@@ -122,7 +121,6 @@ void main(List<String> args) async {
   var port = portEnv == null ? 8989 : int.parse(portEnv);
 
   try {
-    ///TODO: Change IP On Platform
     ///Windows Run ipconfig
     /// Mac 127.0.0.1
     /// default for Cloud 0.0.0.0
