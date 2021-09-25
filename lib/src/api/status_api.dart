@@ -7,8 +7,8 @@ class StatusApi {
     router.get('/status', (Request request) {
       final data = {
         'message': 'Token System',
-        'status': 'Testing',
-        'version': '0.1.4',
+        'status': 'Beta',
+        'version': '0.1.5-Alpha',
       };
       return Response.ok(
         json.encode(data),

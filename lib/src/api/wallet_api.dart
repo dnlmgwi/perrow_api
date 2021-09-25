@@ -68,8 +68,7 @@ class WalletApi {
               'data': {
                 'message': 'Transaction Pending',
                 'balance': user.balance - data.amount!,
-                'trans_id': transId,
-                'transaction': data.toJson(),
+                'trans_id': transId
               }
             }),
             headers: {

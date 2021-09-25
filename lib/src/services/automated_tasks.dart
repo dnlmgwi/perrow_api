@@ -14,8 +14,9 @@ class AutomatedTasks {
     var transStream = walletService.pendingTransactions.watch();
     var depositStream = walletService.pendingDepositsTansactions.watch();
     transStream.listen((event) async {
-      final deb =
-          Debouncing(duration: const Duration(seconds: 10)); //TODO Default 30s
+      final deb = Debouncing(
+        duration: const Duration(seconds: 5),
+      ); //TODO Default 30s
       await deb.debounce(() async {
         if (walletService.pendingTransactions.isNotEmpty) {
           await _processPendingPayments();
