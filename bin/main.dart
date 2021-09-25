@@ -4,12 +4,16 @@ import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
+import 'package:sentry/sentry.dart';
 // import 'package:retry/retry.dart';
 // import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
   /// Load Env Variables
   load();
+
+  //Sentry Crash Anaytics
+  await Sentry.init((options) => options.dsn = Env.sentry);
 
   /// Load Internal Stores
   Hive.init('./storage');
@@ -132,9 +136,10 @@ void main(List<String> args) async {
     server.autoCompress = true;
 
     print('Serving at http://${server.address.host}:${server.port}');
-  } catch (error, stacktrace) {
-    //TODO Handle Error
-    print(error);
-    print(stacktrace);
+  } catch (exception, stackTrace) {
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+    );
   }
 }
