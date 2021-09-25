@@ -82,9 +82,9 @@ class AccountService {
       throw TransactionsNotFoundException();
     }
 
-    result.forEach((element) {
-      jsonTransactions.add(TransactionRecord.fromJson(element));
-    });
+    for (var transction in result) {
+      jsonTransactions.add(TransactionRecord.fromJson(transction));
+    }
 
     return jsonTransactions;
   }

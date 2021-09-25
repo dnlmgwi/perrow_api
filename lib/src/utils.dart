@@ -64,10 +64,11 @@ Middleware handleCors() {
 //   );
 // }
 
-dynamic verifyJWT({required String token, required String secret}) {
+JWT verifyJWT({required String token, required String secret}) {
   try {
     final jwt = JWT.verify(token, SecretKey(secret));
     //TODO Zero Trust
+
     return jwt;
   } on JWTExpiredError catch (e) {
     print('JWTExpiredError ${e.message}');
@@ -83,7 +84,7 @@ Middleware handleAuth({required String secret}) {
     return (Request request) async {
       final authHeader = request.headers['authorization'];
       String token;
-      var jwt;
+      late JWT jwt;
 
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
         token = authHeader.substring(7);

@@ -314,8 +314,8 @@ class WalletService {
             account: await accountService.findAccountDetails(
               id: senderid,
             ));
-      } catch (exeption, stacktrace) {
-        rethrow; //TODO Handle Error
+      } catch (exeption) {
+        rethrow; //TODO Handle Abuse Error
       }
 
       if (await accountStatusCheck(
@@ -443,7 +443,7 @@ class WalletService {
           })
           .eq('id', id)
           .execute();
-    } catch (exception, stackTrace) {
+    } catch (exception) {
       // await Sentry.captureException(
       //   exception,
       //   stackTrace: stackTrace,
@@ -472,7 +472,7 @@ class WalletService {
           .update({'status': 'normal'})
           .eq('id', id)
           .execute();
-    } catch (exception, stackTrace) {
+    } catch (exception) {
       //TODO Handle Errors
       // await Sentry.captureException(
       //   exception,

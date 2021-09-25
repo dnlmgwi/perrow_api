@@ -96,7 +96,7 @@ class BlockchainService {
           ); //TODO on Error Handle Exceptions
 
       return Block.fromJson(latestBlock.data[0]);
-    } on PostgrestError catch (exception, stackTrace) {
+    } on PostgrestError catch (exception) {
       // await Sentry.captureException(
       //   exception,
       //   stackTrace: stackTrace,
@@ -179,18 +179,19 @@ class BlockchainService {
         .execute(); //TODO Error Handling
 
     var chain = response.data as List;
-    chain.forEach((element) {
-      jsonChain.add(Block.fromJson(element));
-    });
+
+    for (var block in chain) {
+      jsonChain.add(Block.fromJson(block));
+    }
 
     return jsonChain;
   }
 
   String getPendingTransactions() {
     var jsonChain = [];
-    walletService.pendingTransactions.values.forEach((element) {
-      jsonChain.add(element.toJson());
-    });
+    for (var transaction in walletService.pendingTransactions.values) {
+      jsonChain.add(transaction.toJson());
+    }
     json.encode(jsonChain);
     return jsonChain.toString();
   }

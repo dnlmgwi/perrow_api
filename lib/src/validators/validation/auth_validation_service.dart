@@ -21,7 +21,7 @@ class AuthValidationService {
           (error, stackTrace) => throw Exception(error),
         );
 
-    var result = response.data as List; //TODO Change ID to INT
+    var result = response.data as List;
 
     if (result.isEmpty) {
       response = await register(
