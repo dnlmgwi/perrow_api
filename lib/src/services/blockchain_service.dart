@@ -32,9 +32,12 @@ class BlockchainService {
                 throw Exception(
               '$error $stackTrace',
             ),
-          ); //TODO Stacktace
-    } catch (e, trace) {
-      print('lastBlock ${e.toString()} ${trace.toString()}');
+          );
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
 
@@ -96,12 +99,11 @@ class BlockchainService {
           ); //TODO on Error Handle Exceptions
 
       return Block.fromJson(latestBlock.data[0]);
-    } on PostgrestError catch (exception) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      //   hint: stackTrace,
-      // );//TODO Handle Errors
+    } on PostgrestError catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
   }
@@ -169,7 +171,7 @@ class BlockchainService {
   }
 
   Future<List<Block>> getBlockchain() async {
-    //Todo Handling
+    //Todo Error Handling with try/catch
     var jsonChain = <Block>[];
     var response = await DatabaseService.client
         .from('blockchain')

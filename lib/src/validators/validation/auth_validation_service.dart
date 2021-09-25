@@ -61,11 +61,11 @@ class AuthValidationService {
         throw AccountDuplicationFoundException();
       }
     } on PostgrestError catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      //   hint: stackTrace,
-      // ); //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        hint: stackTrace,
+      );
       rethrow;
     }
   }
@@ -111,13 +111,12 @@ class AuthValidationService {
             .execute()
             .catchError(
           (exception, stackTrace) async {
-            // await Sentry.captureException(
-            //   exception,
-            //   stackTrace: stackTrace,
-            // );
-            //TODO Handle Errors
+            await Sentry.captureException(
+              exception,
+              stackTrace: stackTrace,
+            );
           },
-        ); //TODO Muliple Fails Alert People In Area.
+        );
       }
       if (response.error != null) {
         throw Exception(response.error!.message);
@@ -125,10 +124,12 @@ class AuthValidationService {
 
       print(response.data); //TODO Notify User Once Account Is Created
 
-      return response; //TODO Should it return this data? Yes!
-
+      return response;
     } on PostgrestError catch (exception, stackTrace) {
-      //TODO Handle Erros
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       rethrow;
     } catch (e) {
       rethrow;

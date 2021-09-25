@@ -36,7 +36,7 @@ class AccountService {
     PostgrestResponse? response;
     try {
       response = await DatabaseService.client
-          .from('wallet') //TODO Change Lookup Table
+          .from('wallet')
           .select(
             'status, balance, id, last_transaction',
           )

@@ -62,29 +62,26 @@ class WalletService {
               () => transaction.delete(),
             );
           } catch (exception, stackTrace) {
-            // await Sentry.captureException(
-            //   exception,
-            //   stackTrace: stackTrace,
-            //   hint: transaction.toJson(),
-            // );
-            //TODO Handle Errors
+            await Sentry.captureException(
+              exception,
+              stackTrace: stackTrace,
+              hint: transaction.toJson(),
+            );
           }
         }
       }
     } on PostgrestError catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      //   hint: stackTrace,
-      // );
-      //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        hint: stackTrace,
+      );
       rethrow;
     } catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
-      //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -188,13 +185,17 @@ class WalletService {
     PostgrestResponse response;
     try {
       response = await DatabaseService.client
-          .from('wallet') //TODO TABLE NAME
+          .from('wallet')
           .update({'balance': account.balance + value})
           .eq('id', account.id)
-          .execute(); //TODO Error Handling
+          .execute();
       return TransAccount.fromJson(response.data[0]);
-    } catch (e) {
-      throw Exception(e);
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     }
   }
 
@@ -210,7 +211,7 @@ class WalletService {
             'balance': senderAccount.balance - value,
           })
           .eq('id', senderAccount.id)
-          .execute() //TODO Error Handling
+          .execute()
           .then((_) => DatabaseService.client
               .from('wallet')
               .update({
@@ -218,9 +219,13 @@ class WalletService {
                 'last_transaction': DateTime.now().millisecondsSinceEpoch
               })
               .eq('id', recipientAccount.id)
-              .execute()); //TODO Error Handing
-    } catch (e) {
-      throw Exception(e); //TODO Handle Errors
+              .execute());
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     }
   }
 
@@ -244,11 +249,10 @@ class WalletService {
             .execute();
       }
     } catch (exception, stackTrace) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
-      //TODO Handle Errors
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
   }
@@ -314,8 +318,12 @@ class WalletService {
             account: await accountService.findAccountDetails(
               id: senderid,
             ));
-      } catch (exeption) {
-        rethrow; //TODO Handle Abuse Error
+      } catch (exception, stackTrace) {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+        rethrow;
       }
 
       if (await accountStatusCheck(
@@ -423,8 +431,12 @@ class WalletService {
       }
 
       return accountValid;
-    } on RecentTransException catch (e) {
-      throw '$e'; //TODO Handle Errors
+    } on RecentTransException catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -443,12 +455,12 @@ class WalletService {
           })
           .eq('id', id)
           .execute();
-    } catch (exception) {
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
-      //TODO Handle Errors
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     }
   }
 
@@ -472,12 +484,12 @@ class WalletService {
           .update({'status': 'normal'})
           .eq('id', id)
           .execute();
-    } catch (exception) {
-      //TODO Handle Errors
-      // await Sentry.captureException(
-      //   exception,
-      //   stackTrace: stackTrace,
-      // );
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+      rethrow;
     }
   }
 }
