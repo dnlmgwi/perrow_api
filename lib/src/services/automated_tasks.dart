@@ -57,14 +57,12 @@ class AutomatedTasks {
             'claimed': false,
           })
           .execute()
-          .onError(
+          .catchError(
             (exception, stackTrace) async {
               await Sentry.captureException(
                 exception,
                 stackTrace: stackTrace,
               );
-              //TODO Handle Errors
-              throw Exception(exception);
             },
           );
 

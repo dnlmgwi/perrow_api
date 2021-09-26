@@ -61,31 +61,33 @@ class BlockchainService {
 
       await walletService
           .processPayments(prevBlock, id)
-          .then(
-            (_) => DatabaseService.client
-                .from('blockchain')
-                .insert(
-                  Block(
-                    id: id,
-                    index: prevBlock.index! + 1, //DO NOT TOUCH
-                    timestamp: DateTime.now().millisecondsSinceEpoch,
-                    proof: proof,
-                    prevHash: previousHash,
-                    blockTransactions: blockTransactions,
-                  ).toJson(),
-                )
-                .execute()
-                .then(
-                  (value) => blockTransactions.clear(),
-                )
-                .onError(
-                  (error, stackTrace) => throw Exception('$error $stackTrace'),
-                ), //TODO Stacktace
-          )
-          .onError(
-            (error, stackTrace) =>
-                throw Exception(' Error: $error StackTrace: $stackTrace'),
-          );
+          .then((_) => DatabaseService.client
+                      .from('blockchain')
+                      .insert(
+                        Block(
+                          id: id,
+                          index: prevBlock.index! + 1,
+
+                          ///DO NOT TOUCH
+                          timestamp: DateTime.now().millisecondsSinceEpoch,
+                          proof: proof,
+                          prevHash: previousHash,
+                          blockTransactions: blockTransactions,
+                        ).toJson(),
+                      )
+                      .execute()
+                      .then(
+                        (value) => blockTransactions.clear(),
+                      )
+                      .catchError(
+                    (exception, stackTrace) async {
+                      await Sentry.captureException(
+                        exception,
+                        stackTrace: stackTrace,
+                      );
+                    },
+                  ) //TODO Stacktace
+              );
       //Successfully Mined
 
       var latestBlock = await DatabaseService.client
@@ -94,9 +96,14 @@ class BlockchainService {
           .limit(1)
           .order('timestamp', ascending: false)
           .execute()
-          .onError(
-            (error, stackTrace) => throw Exception('$error $stackTrace'),
-          ); //TODO on Error Handle Exceptions
+          .catchError(
+        (exception, stackTrace) async {
+          await Sentry.captureException(
+            exception,
+            stackTrace: stackTrace,
+          );
+        },
+      ); //TODO on Error Handle Exceptions
 
       return Block.fromJson(latestBlock.data[0]);
     } on PostgrestError catch (exception, stackTrace) {
@@ -178,7 +185,15 @@ class BlockchainService {
         .select()
         .limit(3) //TODO Get The Whole Blockchain
         .order('index', ascending: true)
-        .execute(); //TODO Error Handling
+        .execute()
+        .catchError(
+      (exception, stackTrace) async {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+      },
+    );
 
     var chain = response.data as List;
 

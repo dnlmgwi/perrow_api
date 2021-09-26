@@ -66,25 +66,23 @@ class AccountService {
 
     PostgrestResponse? response;
 
-    try {
-      response = await DatabaseService.client //TODO Login with ID/PhoneNumber
-          .from('transaction')
-          .select()
-          .or('sender.eq.$id,recipient.eq.$id')
-          .limit(paginate ??= 10)
-          .order('timestamp', ascending: false)
-          .execute()
-          .onError(
-            (error, stackTrace) => throw Exception(error),
-          );
-    } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
-    }
+    response = await DatabaseService.client //TODO Login with ID/PhoneNumber
+        .from('transaction')
+        .select()
+        .or('sender.eq.$id,recipient.eq.$id')
+        .limit(paginate ??= 10)
+        .order('timestamp', ascending: false)
+        .execute()
+        .catchError(
+      (exception, stackTrace) async {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+      },
+    );
 
-    var result = response!.data as List;
+    var result = response.data as List;
 
     if (result.isEmpty) {
       throw TransactionsNotFoundException();

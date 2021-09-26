@@ -471,7 +471,15 @@ class WalletService {
         .from('recharge_notifications')
         .update({'claimed': true})
         .eq('trans_id', transID)
-        .execute(); //TODO: Error Handling
+        .execute()
+        .catchError(
+          (exception, stackTrace) async {
+            await Sentry.captureException(
+              exception,
+              stackTrace: stackTrace,
+            );
+          },
+        );
   }
 
   Future<void> changeAccountStatusNormal(
@@ -483,7 +491,15 @@ class WalletService {
           .from('wallet')
           .update({'status': 'normal'})
           .eq('id', id)
-          .execute();
+          .execute()
+          .catchError(
+            (exception, stackTrace) async {
+              await Sentry.captureException(
+                exception,
+                stackTrace: stackTrace,
+              );
+            },
+          );
     } catch (exception, stackTrace) {
       await Sentry.captureException(
         exception,
