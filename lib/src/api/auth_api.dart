@@ -69,8 +69,9 @@ class AuthApi {
           }
 
           final session = await authService.login(
+            payload.password!,
             email: payload.email!,
-            password: payload.password!,
+            phone: payload.phone!,
           );
 
           return Response.ok(
