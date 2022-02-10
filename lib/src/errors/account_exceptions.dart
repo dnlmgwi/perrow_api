@@ -127,6 +127,21 @@ class InvalidAmountException implements Exception {
   }
 }
 
+class InvalidCurrencyException implements Exception {
+  ///This Exception is thrown when there is an invalid Input Entered in the request
+  late String _message;
+
+  InvalidCurrencyException(
+      [String message = 'Please provide the currency key {currency: value}']) {
+    _message = message;
+  }
+
+  @override
+  String toString() {
+    return _message;
+  }
+}
+
 class InsufficientFundsException implements Exception {
   ///This Exception is thrown when there is Insufficient Funds in the account
   late String _message;

@@ -8,7 +8,7 @@ class Block {
 
   int? index;
 
-  int timestamp;
+  DateTime timestamp;
 
   @JsonKey(name: 'block_transactions')
   List blockTransactions;

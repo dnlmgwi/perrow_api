@@ -9,9 +9,12 @@ class TransferRequest {
 
   late int? amount;
 
+  late String? currency;
+
   TransferRequest({
     required this.id,
     required this.amount,
+    required this.currency,
   });
 
   factory TransferRequest.fromJson(Map<String, dynamic> json) =>

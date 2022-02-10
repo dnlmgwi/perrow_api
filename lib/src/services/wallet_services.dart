@@ -23,8 +23,7 @@ class WalletService {
 
   Future<void> processPayments(Block prevBlock, String id) async {
     try {
-      if (DateTime.fromMillisecondsSinceEpoch(prevBlock.timestamp)
-          .isBefore(DateTime.now())) {
+      if (prevBlock.timestamp.isBefore(DateTime.now())) {
         for (var transaction in pendingTransactions.values) {
           switch (transaction.transType) {
             case 0:
@@ -48,6 +47,7 @@ class WalletService {
                   timestamp: transaction.timestamp,
                   transId: transaction.transId,
                   transType: transaction.transType,
+                  currency: transaction.currency,
                   blockId: id,
                 ).toJson()) //TODO on Error Return Account to Normal
                 .execute()
@@ -287,10 +287,14 @@ class WalletService {
         await accountService
             .findRecipientDepositAccount(phoneNumber: item.phoneNumber)
             .then((account) => addToPendingDeposit(
-                    item.transID, account.id!.toString(), extractMKAmount(item))
-                .then((_) => changeClaimToTrue(item.transID))
-                .then((_) => changeAccountStatusToProcessing(account.id!))
-                .then((_) => item.delete()));
+                  item.transID,
+                  account.id!.toString(),
+                  extractMKAmount(item),
+                  item.currency,
+                )
+                    .then((_) => changeClaimToTrue(item.transID))
+                    .then((_) => changeAccountStatusToProcessing(account.id!))
+                    .then((_) => item.delete()));
       }
     } catch (e) {
       rethrow;
@@ -300,11 +304,11 @@ class WalletService {
   int extractMKAmount(RechargeNotification item) =>
       int.parse(item.amount.toString().split('MK').last);
 
-  Future<String> initiateTransfer({
-    required int senderid,
-    required int recipientid,
-    required int amount,
-  }) async {
+  Future<String> initiateTransfer(
+      {required int senderid,
+      required int recipientid,
+      required int amount,
+      required String currency}) async {
     var transId = Uuid().v4();
     if (senderid == recipientid) {
       //Prevents User from Sending Points To Self Compounding Account Balance.
@@ -329,8 +333,8 @@ class WalletService {
       if (await accountStatusCheck(
         senderid,
       )) {
-        addToPendingTransfer(
-            senderid.toString(), recipientid.toString(), amount, transId);
+        addToPendingTransfer(senderid.toString(), recipientid.toString(),
+            amount, currency, transId);
 
         await changeAccountStatusToProcessing(
           senderid,
@@ -346,6 +350,7 @@ class WalletService {
     String sender,
     String recipient,
     int amount,
+    String currency,
   ) async {
     /// Edit User Account Balance
     /// String id - User Perrow API id
@@ -355,7 +360,8 @@ class WalletService {
       sender: sender,
       recipient: recipient,
       amount: amount,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
+      currency: currency,
+      timestamp: DateTime.now(),
       transId: Uuid().v4(),
       transType: TransactionType.deposit.index,
     ));
@@ -375,7 +381,8 @@ class WalletService {
       sender: sender,
       recipient: recipient,
       amount: amount,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
+      currency: 'MWK',
+      timestamp: DateTime.now(),
       transId: transId,
       transType: TransactionType.withdraw.index,
     ));
@@ -385,6 +392,7 @@ class WalletService {
     String sender,
     String recipient,
     int amount,
+    String currency,
     String transId,
   ) async {
     //Allows users to transfer points between each other
@@ -393,7 +401,8 @@ class WalletService {
       sender: sender,
       recipient: recipient,
       amount: amount,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
+      currency: currency,
+      timestamp: DateTime.now(),
       transId: transId,
       transType: TransactionType
           .transfer.index, //TODO: Change 0 and 1 to Deposit and Withdaw;

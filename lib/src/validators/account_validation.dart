@@ -3,12 +3,15 @@ import 'package:perrow_api/src/errors/account_exceptions.dart';
 
 class AccountApiValidation {
   //Check if the correct Keys Where Provided in the request if null prompt the user on what to provide.
-  static void nullInputValidation({required recipientid, required amount}) {
+  static void nullInputValidation(
+      {required recipientid, required amount, required currency}) {
     if (recipientid == null) {
       //If Body Doesn't container id & amount key
       throw InvalidUserIDException();
     } else if (amount == null) {
       throw InvalidAmountException();
+    } else if (currency == null) {
+      throw InvalidCurrencyException();
     }
   }
 

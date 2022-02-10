@@ -20,7 +20,7 @@ class UserApi {
       ((
         Request request,
       ) async {
-        // var payload = json.decode(await request.readAsString());
+        var payload = json.decode(await request.readAsString());
 
         // if (AccountApiValidation.phoneNumberCheck(payload['phone_number'])) {
         //   //Todo: Input Validation Errors
@@ -42,7 +42,7 @@ class UserApi {
 
           final user = await AuthValidationService.fetchUserAccountDetails(
             id: authDetails.payload['id'],
-            // phoneNumber: payload['phone_number'],
+            phoneNumber: payload['phone_number'],
           );
 
           return Response.ok(

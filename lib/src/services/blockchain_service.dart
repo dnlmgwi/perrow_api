@@ -69,7 +69,7 @@ class BlockchainService {
                           index: prevBlock.index! + 1,
 
                           ///DO NOT TOUCH
-                          timestamp: DateTime.now().millisecondsSinceEpoch,
+                          timestamp: DateTime.now(),
                           proof: proof,
                           prevHash: previousHash,
                           blockTransactions: blockTransactions,

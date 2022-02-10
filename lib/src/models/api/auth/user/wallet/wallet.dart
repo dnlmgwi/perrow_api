@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'account.g.dart';
+part 'wallet.g.dart';
 
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
-class Account {
+class Wallet {
   int? id;
 
   String status;
@@ -12,7 +12,7 @@ class Account {
   int balance;
 
   @JsonKey(name: 'phone_number')
-  String? phoneNumber;
+  String phoneNumber;
 
   @JsonKey(name: 'created_at')
   late DateTime? createdAt;
@@ -21,14 +21,14 @@ class Account {
   late DateTime? updatedAt;
 
   @JsonKey(name: 'joined_date')
-  int joinedDate;
+  DateTime joinedDate;
 
   @JsonKey(name: 'last_transaction')
-  late int? lastTransaction;
+  late DateTime? lastTransaction;
 
-  Account({
+  Wallet({
     this.id,
-    this.phoneNumber,
+    required this.phoneNumber,
     required this.status,
     required this.balance,
     required this.joinedDate,
@@ -37,8 +37,7 @@ class Account {
     this.lastTransaction,
   });
 
-  factory Account.fromJson(Map<String, dynamic> json) =>
-      _$AccountFromJson(json);
+  factory Wallet.fromJson(Map<String, dynamic> json) => _$WalletFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AccountToJson(this);
+  Map<String, dynamic> toJson() => _$WalletToJson(this);
 }

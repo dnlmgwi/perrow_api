@@ -37,6 +37,7 @@ class WalletApi {
           AccountApiValidation.nullInputValidation(
             recipientid: data.id,
             amount: data.amount,
+            currency: data.currency,
           );
 
           if (AccountApiValidation.recipientCheck(data.id!.toString())) {
@@ -61,6 +62,7 @@ class WalletApi {
             senderid: user.id!,
             recipientid: data.id!,
             amount: data.amount!,
+            currency: data.currency!,
           );
 
           return Response.ok(
@@ -68,7 +70,7 @@ class WalletApi {
               'data': {
                 'message': 'Transaction Pending',
                 'balance': user.balance - data.amount!,
-                'trans_id': transId
+                'trans_id': transId,
               }
             }),
             headers: {
