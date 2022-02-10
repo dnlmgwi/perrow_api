@@ -28,7 +28,7 @@ class WalletApi {
           final authDetails = request.context['authDetails'] as JWT;
 
           final user = await _accountService.findAccountDetails(
-            id: authDetails.payload['id'],
+            id: authDetails.subject!,
           );
 
           var data = TransferRequest.fromJson(
@@ -37,9 +37,10 @@ class WalletApi {
           AccountApiValidation.nullInputValidation(
             recipientid: data.id,
             amount: data.amount,
+            currency: data.currency,
           );
 
-          if (AccountApiValidation.recipientCheck(data.id!.toString())) {
+          if (AccountApiValidation.recipientCheck(data.id!)) {
             return Response.forbidden(
               AccountApiResponses.recipientError(),
               headers: {
@@ -61,6 +62,7 @@ class WalletApi {
             senderid: user.id!,
             recipientid: data.id!,
             amount: data.amount!,
+            currency: data.currency!,
           );
 
           return Response.ok(
@@ -68,7 +70,7 @@ class WalletApi {
               'data': {
                 'message': 'Transaction Pending',
                 'balance': user.balance - data.amount!,
-                'trans_id': transId
+                'trans_id': transId,
               }
             }),
             headers: {

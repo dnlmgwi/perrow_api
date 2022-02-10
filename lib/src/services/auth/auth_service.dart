@@ -3,8 +3,11 @@ import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:supabase/supabase.dart';
 
 class AuthService {
-  Future<Session?> register(String password,
-      {required String phone, required String email}) async {
+  Future<Session?> register(
+    String password, {
+    required String phone,
+    required String email,
+  }) async {
     try {
       if (email.isNotEmpty) {
         final response =
@@ -18,8 +21,10 @@ class AuthService {
           return session;
         }
       } else {
-        final response = await DatabaseService.sbClient.auth
-            .signUpWithPhone(phone, password);
+        final response = await DatabaseService.sbClient.auth.signUpWithPhone(
+          phone,
+          password,
+        );
 
         if (response.error != null) {
           // Error
@@ -35,9 +40,9 @@ class AuthService {
     }
   }
 
-  Future<Session?> login({
+  Future<Session?> login(
+    String password, {
     required String email,
-    required String password,
   }) async {
     try {
       final response = await DatabaseService.sbClient.auth.signIn(

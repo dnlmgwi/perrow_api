@@ -1,11 +1,8 @@
 import 'package:pedantic/pedantic.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
-// import 'package:retry/retry.dart';
-// import 'package:shelf_secure_cookie/shelf_secure_cookie.dart';
 
 void main(List<String> args) async {
   /// Load Env Variables
@@ -75,7 +72,7 @@ void main(List<String> args) async {
   //   '/v1/auth/',
   //   AuthApi(
   //     secret: Env.secret!,
-  //     tokenService: tokenService,
+  //     // tokenService: tokenService,
   //     authService: authService,
   //   ).router,
   // );

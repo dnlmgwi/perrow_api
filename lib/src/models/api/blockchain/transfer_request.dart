@@ -5,13 +5,16 @@ part 'transfer_request.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class TransferRequest {
-  late int? id;
+  late String? id;
 
   late int? amount;
+
+  late String? currency;
 
   TransferRequest({
     required this.id,
     required this.amount,
+    required this.currency,
   });
 
   factory TransferRequest.fromJson(Map<String, dynamic> json) =>

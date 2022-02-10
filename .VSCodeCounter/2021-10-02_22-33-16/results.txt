@@ -1,0 +1,117 @@
+Date : 2021-10-02 22:33:16
+Directory : c:\Users\Daniel\AndroidStudioProjects\perrow_api
+Total : 57 files,  2464 codes, 663 comments, 537 blanks, all 3664 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| Dart               |         50 |      2,366 |        658 |        516 |      3,540 |
+| YAML               |          2 |         46 |          5 |          6 |         57 |
+| JSON with Comments |          1 |         18 |          0 |          1 |         19 |
+| HTML               |          1 |         16 |          0 |          5 |         21 |
+| CSS                |          1 |         12 |          0 |          3 |         15 |
+| Markdown           |          2 |          6 |          0 |          6 |         12 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                      |         57 |      2,464 |        663 |        537 |      3,664 |
+| bin                                                                                                                    |          1 |         77 |         45 |         22 |        144 |
+| lib                                                                                                                    |         49 |      2,289 |        613 |        494 |      3,396 |
+| lib\packages                                                                                                           |          6 |         48 |          8 |         16 |         72 |
+| lib\src                                                                                                                |         43 |      2,241 |        605 |        478 |      3,324 |
+| lib\src\api                                                                                                            |          8 |        476 |        156 |         86 |        718 |
+| lib\src\api\mailjet_api                                                                                                |          1 |          0 |         58 |         10 |         68 |
+| lib\src\api\mocean_api                                                                                                 |          1 |          0 |         32 |          8 |         40 |
+| lib\src\api\twilio_api                                                                                                 |          1 |         34 |         33 |         17 |         84 |
+| lib\src\errors                                                                                                         |          2 |        191 |         18 |         54 |        263 |
+| lib\src\models                                                                                                         |         12 |        255 |          8 |         97 |        360 |
+| lib\src\models\api                                                                                                     |          5 |         98 |          8 |         39 |        145 |
+| lib\src\models\api\auth                                                                                                |          4 |         84 |          6 |         33 |        123 |
+| lib\src\models\api\auth\user                                                                                           |          4 |         84 |          6 |         33 |        123 |
+| lib\src\models\api\auth\user\account                                                                                   |          1 |         31 |          2 |         12 |         45 |
+| lib\src\models\api\auth\user\login                                                                                     |          1 |         16 |          2 |          6 |         24 |
+| lib\src\models\api\auth\user\register                                                                                  |          1 |         18 |          2 |          6 |         26 |
+| lib\src\models\api\auth\user\transaction                                                                               |          1 |         19 |          0 |          9 |         28 |
+| lib\src\models\api\blockchain                                                                                          |          1 |         14 |          2 |          6 |         22 |
+| lib\src\models\block                                                                                                   |          1 |         23 |          0 |         11 |         34 |
+| lib\src\models\hive                                                                                                    |          2 |         61 |          0 |         17 |         78 |
+| lib\src\models\hive\0.transactionRecord                                                                                |          1 |         36 |          0 |         10 |         46 |
+| lib\src\models\hive\1.rechargeNotification                                                                             |          1 |         25 |          0 |          7 |         32 |
+| lib\src\models\location                                                                                                |          1 |         18 |          0 |          7 |         25 |
+| lib\src\models\mineResult                                                                                              |          1 |         22 |          0 |          9 |         31 |
+| lib\src\models\perrow_response                                                                                         |          1 |         18 |          0 |          7 |         25 |
+| lib\src\models\tokenPair                                                                                               |          1 |         15 |          0 |          7 |         22 |
+| lib\src\services                                                                                                       |         10 |        915 |        290 |        143 |      1,348 |
+| lib\src\services\auth                                                                                                  |          1 |         50 |          5 |          5 |         60 |
+| lib\src\validators                                                                                                     |          9 |        272 |         66 |         56 |        394 |
+| lib\src\validators\validation                                                                                          |          2 |        184 |          6 |         30 |        220 |
+| web                                                                                                                    |          2 |         28 |          0 |          8 |         36 |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                               | language           | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\CHANGELOG.md                                                          | Markdown           |          5 |          0 |          5 |         10 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\PerrowAPI.code-workspace                                              | JSON with Comments |         18 |          0 |          1 |         19 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\README.md                                                             | Markdown           |          1 |          0 |          1 |          2 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\analysis_options.yaml                                                 | YAML               |          4 |          5 |          2 |         11 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\bin\main.dart                                                         | Dart               |         77 |         45 |         22 |        144 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\core.dart                                                | Dart               |          3 |          1 |          2 |          6 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\dependencies.dart                                        | Dart               |         17 |          2 |          2 |         21 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\models.dart                                              | Dart               |          8 |          4 |          5 |         17 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\perrow_api.dart                                          | Dart               |          6 |          1 |          3 |         10 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\routes.dart                                              | Dart               |          5 |          0 |          2 |          7 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\packages\services.dart                                            | Dart               |          9 |          0 |          2 |         11 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\account_api.dart                                          | Dart               |        124 |         17 |         11 |        152 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\auth_api.dart                                             | Dart               |        157 |         16 |         16 |        189 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\blockchain_api.dart                                       | Dart               |         37 |          0 |          6 |         43 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\mailjet_api\mailjet_api.dart                              | Dart               |          0 |         58 |         10 |         68 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\mocean_api\mocean_api.dart                                | Dart               |          0 |         32 |          8 |         40 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\status_api.dart                                           | Dart               |         20 |          0 |          4 |         24 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\twilio_api\twilio_api.dart                                | Dart               |         34 |         33 |         17 |         84 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\api\wallet_api.dart                                           | Dart               |        104 |          0 |         14 |        118 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\config.dart                                                   | Dart               |         35 |         22 |         25 |         82 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\errors\account_exceptions.dart                                | Dart               |        136 |         13 |         39 |        188 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\errors\auth_exceptions.dart                                   | Dart               |         55 |          5 |         15 |         75 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\api\auth\user\account\account.dart                     | Dart               |         31 |          2 |         12 |         45 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\api\auth\user\login\login_request.dart                 | Dart               |         16 |          2 |          6 |         24 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\api\auth\user\register\register_request.dart           | Dart               |         18 |          2 |          6 |         26 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\api\auth\user\transaction\trans_account.dart           | Dart               |         19 |          0 |          9 |         28 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\api\blockchain\transfer_request.dart                   | Dart               |         14 |          2 |          6 |         22 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\block\block.dart                                       | Dart               |         23 |          0 |         11 |         34 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\hive\0.transactionRecord\transaction_record.dart       | Dart               |         36 |          0 |         10 |         46 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\hive\1.rechargeNotification\recharge_notification.dart | Dart               |         25 |          0 |          7 |         32 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\location\location.dart                                 | Dart               |         18 |          0 |          7 |         25 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\mineResult\mine_result.dart                            | Dart               |         22 |          0 |          9 |         31 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\perrow_response\perrow_response.dart                   | Dart               |         18 |          0 |          7 |         25 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\models\tokenPair\token_pair.dart                              | Dart               |         15 |          0 |          7 |         22 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\account_service.dart                                 | Dart               |         80 |          1 |         17 |         98 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\api_services.dart                                    | Dart               |         14 |         13 |          8 |         35 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\auth\auth_service.dart                               | Dart               |         50 |          5 |          5 |         60 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\automated_tasks.dart                                 | Dart               |         79 |          3 |          8 |         90 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\blockchain_service.dart                              | Dart               |        168 |         19 |         29 |        216 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\database_service.dart                                | Dart               |         15 |          0 |          3 |         18 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\location_services.dart                               | Dart               |         13 |          1 |          4 |         18 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\notification_service.dart                            | Dart               |          0 |        202 |         23 |        225 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\user_actvity_service.dart                            | Dart               |         54 |         15 |          7 |         76 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\services\wallet_services.dart                                 | Dart               |        442 |         31 |         39 |        512 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\utils.dart                                                    | Dart               |         97 |         45 |         17 |        159 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\account_responses.dart                             | Dart               |         19 |          2 |          3 |         24 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\account_validation.dart                            | Dart               |         19 |          4 |          5 |         28 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\auth_responses.dart                                | Dart               |          2 |         17 |          2 |         21 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\auth_validation.dart                               | Dart               |         20 |          7 |          7 |         34 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\blockchain_responses.dart                          | Dart               |          2 |         18 |          3 |         23 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\blockchain_validation.dart                         | Dart               |         15 |          5 |          4 |         24 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\enum_values.dart                                   | Dart               |         11 |          7 |          2 |         20 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\validation\auth_validation_service.dart            | Dart               |        118 |          6 |         15 |        139 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\lib\src\validators\validation\blockchain_validation_service.dart      | Dart               |         66 |          0 |         15 |         81 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\pubspec.yaml                                                          | YAML               |         42 |          0 |          4 |         46 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\web\index.html                                                        | HTML               |         16 |          0 |          5 |         21 |
+| c:\Users\Daniel\AndroidStudioProjects\perrow_api\web\styles.css                                                        | CSS                |         12 |          0 |          3 |         15 |
+| Total                                                                                                                  |                    |      2,464 |        663 |        537 |      3,664 |
++------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

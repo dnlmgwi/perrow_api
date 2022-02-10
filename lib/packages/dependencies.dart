@@ -18,3 +18,4 @@ export 'package:shelf/shelf.dart';
 export 'package:throttling/throttling.dart';
 export 'package:validators/validators.dart';
 export 'package:sentry/sentry.dart';
+export 'package:uuid/uuid.dart';

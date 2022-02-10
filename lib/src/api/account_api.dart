@@ -39,9 +39,10 @@ class UserApi {
         // }
         try {
           final authDetails = request.context['authDetails'] as JWT; //as JWT;
+          print(authDetails.payload.toString());
 
           final user = await AuthValidationService.fetchUserAccountDetails(
-            id: authDetails.payload['id'],
+            id: authDetails.subject!,
             // phoneNumber: payload['phone_number'],
           );
 
@@ -98,7 +99,7 @@ class UserApi {
         try {
           final authDetails = request.context['authDetails'] as JWT;
           final transactions = await AccountService.fetchUserTransactions(
-            id: authDetails.payload['id'],
+            id: authDetails.subject!,
           );
 
           return Response.ok(

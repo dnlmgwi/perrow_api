@@ -4,14 +4,14 @@ part 'trans_account.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TransAccount {
-  int? id;
+  String? id;
 
   String status;
 
   int balance;
 
   @JsonKey(name: 'last_transaction')
-  int? lastTrans;
+  DateTime? lastTrans;
 
   TransAccount({
     required this.status,

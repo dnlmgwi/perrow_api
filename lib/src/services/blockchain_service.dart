@@ -1,12 +1,8 @@
-import 'package:perrow_api/packages/core.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:hex/hex.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 import 'package:perrow_api/src/config.dart';
-import 'package:perrow_api/packages/services.dart';
-import 'package:postgrest/postgrest.dart';
-import 'package:uuid/uuid.dart';
 
 class BlockchainService {
   WalletService walletService;
@@ -69,7 +65,7 @@ class BlockchainService {
                           index: prevBlock.index! + 1,
 
                           ///DO NOT TOUCH
-                          timestamp: DateTime.now().millisecondsSinceEpoch,
+                          timestamp: DateTime.now(),
                           proof: proof,
                           prevHash: previousHash,
                           blockTransactions: blockTransactions,

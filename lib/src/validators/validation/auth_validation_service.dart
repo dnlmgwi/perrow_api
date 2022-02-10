@@ -1,11 +1,10 @@
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/errors/auth_exceptions.dart';
 
 class AuthValidationService {
-  static Future<Account> fetchUserAccountDetails({
-    required int id,
+  static Future<Wallet> fetchUserAccountDetails({
+    required String id,
     // required String phoneNumber,
   }) async {
     PostgrestResponse response;
@@ -15,28 +14,27 @@ class AuthValidationService {
         .select()
         .match({
           'id': id,
+          // 'phone_number': phoneNumber,
         })
         .execute()
         .onError(
           (error, stackTrace) => throw Exception(error),
         );
 
-    var result = response.data as List;
+    // var result = response.data as List;
 
-    if (result.isEmpty) {
-      response = await register(
-        id: id,
-        // phoneNumber: phoneNumber,
-      );
-    }
+    // if (result.isEmpty) {
+    //   response = await register(
+    //     id: id,
+    //     // phoneNumber: phoneNumber,
+    //   );
+    // }
 
-    // print(response.data[0]);
-
-    return Account.fromJson(response.data[0]);
+    return Wallet.fromJson(response.data[0]);
   }
 
   static Future findDuplicateAccountCredentials({
-    required int id,
+    required String id,
   }) async {
     try {
       var response = await DatabaseService.client
@@ -71,7 +69,7 @@ class AuthValidationService {
   }
 
   static Future<bool> isDuplicatedAccount({
-    required int id,
+    required String id,
   }) async {
     var duplicateAccount = false;
     try {
@@ -89,8 +87,8 @@ class AuthValidationService {
   }
 
   static Future register({
-    required int id,
-    String? phoneNumber,
+    required String id,
+    // required String phoneNumber,
   }) async {
     try {
       var response = PostgrestResponse();
@@ -100,13 +98,15 @@ class AuthValidationService {
       if (!isDuplicate) {
         response = await DatabaseService.client
             .from('wallet')
-            .insert(Account(
+            .insert(Wallet(
               id: id,
+              // phoneNumber: phoneNumber,
               createdAt: DateTime.now(),
+              currency: "MWK",
               updatedAt: DateTime.now(),
               status: 'normal',
               balance: int.parse(Env.newAccountBalance!),
-              joinedDate: DateTime.now().millisecondsSinceEpoch,
+              joinedDate: DateTime.now(),
             ).toJson())
             .execute()
             .catchError(

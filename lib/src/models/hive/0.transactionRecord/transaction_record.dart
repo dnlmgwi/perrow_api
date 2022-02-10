@@ -15,7 +15,7 @@ class TransactionRecord extends HiveObject {
   int amount;
 
   @HiveField(4)
-  int timestamp;
+  DateTime timestamp;
 
   @HiveField(5)
   @JsonKey(name: 'trans_id')
@@ -29,6 +29,9 @@ class TransactionRecord extends HiveObject {
   @JsonKey(name: 'block_id')
   late String? blockId;
 
+  @HiveField(8)
+  String currency;
+
   TransactionRecord({
     required this.sender,
     required this.recipient,
@@ -36,6 +39,7 @@ class TransactionRecord extends HiveObject {
     required this.timestamp,
     required this.transId,
     required this.transType,
+    required this.currency,
     this.blockId,
   });
 

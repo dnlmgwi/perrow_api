@@ -12,5 +12,7 @@ export 'package:perrow_api/src/models/hive/0.transactionRecord/transaction_recor
 
 /// Recharge
 export 'package:perrow_api/src/models/hive/1.rechargeNotification/recharge_notification.dart';
-export 'package:perrow_api/src/models/api/auth/user/account/account.dart';
 export 'package:perrow_api/src/models/tokenPair/token_pair.dart';
+
+///Wallet
+export 'package:perrow_api/src/models/api/auth/user/wallet/wallet.dart';

@@ -1,5 +1,4 @@
 import 'package:perrow_api/src/config.dart';
-import 'package:postgrest/postgrest.dart';
 import 'package:supabase/supabase.dart';
 
 class DatabaseService {

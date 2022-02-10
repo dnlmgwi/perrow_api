@@ -1,6 +1,6 @@
 name: perrow_api
 description: A transaction record keeping server built using the shelf package.
-version: 0.1.5
+version: 0.2.0
 homepage: https://linkedin.com/in/danielmgawi/
 
 environment:
@@ -19,7 +19,7 @@ dependencies:
   hex: ^0.2.0
   hive_generator: ^1.0.1
   hive: ^2.0.2
-  jiffy: ^4.1.0
+  jiffy: ^5.0.0
   json_annotation: ^4.1.0
   pedantic: ^1.11.1
   postgrest: ^0.1.4
@@ -31,15 +31,15 @@ dependencies:
   shelf_router: ^1.0.0
   shelf_secure_cookie: ^1.2.0
   shelf: ^1.1.4
-  supabase: ^0.1.0
+  supabase: ^0.2.14
   throttling: ^1.0.0
   time: ^2.0.0
   uuid: ^3.0.3
   validators: ^3.0.0
 
 dev_dependencies:
-  build_runner: ^1.12.2
-  build_web_compilers: ^2.12.2
-  json_serializable: ^4.1.2
+  build_runner: ^2.1.7
+  build_web_compilers: ^3.2.2
+  json_serializable: ^6.1.4
   lints: ^1.0.1
   test: ^1.17.3
