@@ -28,7 +28,7 @@ class WalletApi {
           final authDetails = request.context['authDetails'] as JWT;
 
           final user = await _accountService.findAccountDetails(
-            id: authDetails.payload['id'],
+            id: authDetails.subject!,
           );
 
           var data = TransferRequest.fromJson(
@@ -40,7 +40,7 @@ class WalletApi {
             currency: data.currency,
           );
 
-          if (AccountApiValidation.recipientCheck(data.id!.toString())) {
+          if (AccountApiValidation.recipientCheck(data.id!)) {
             return Response.forbidden(
               AccountApiResponses.recipientError(),
               headers: {

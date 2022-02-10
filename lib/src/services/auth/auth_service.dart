@@ -43,12 +43,10 @@ class AuthService {
   Future<Session?> login(
     String password, {
     required String email,
-    required String phone,
   }) async {
     try {
       final response = await DatabaseService.sbClient.auth.signIn(
         email: email,
-        phone: phone,
         password: password,
       );
 

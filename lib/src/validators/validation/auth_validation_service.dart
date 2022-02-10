@@ -1,12 +1,11 @@
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/errors/auth_exceptions.dart';
 
 class AuthValidationService {
   static Future<Wallet> fetchUserAccountDetails({
-    required int id,
-    required String phoneNumber,
+    required String id,
+    // required String phoneNumber,
   }) async {
     PostgrestResponse response;
 
@@ -15,29 +14,27 @@ class AuthValidationService {
         .select()
         .match({
           'id': id,
-          'phone_number': phoneNumber,
+          // 'phone_number': phoneNumber,
         })
         .execute()
         .onError(
           (error, stackTrace) => throw Exception(error),
         );
 
-    var result = response.data as List;
+    // var result = response.data as List;
 
-    if (result.isEmpty) {
-      response = await register(
-        id: id,
-        phoneNumber: phoneNumber,
-      );
-    }
-
-    print(response.data[0]);
+    // if (result.isEmpty) {
+    //   response = await register(
+    //     id: id,
+    //     // phoneNumber: phoneNumber,
+    //   );
+    // }
 
     return Wallet.fromJson(response.data[0]);
   }
 
   static Future findDuplicateAccountCredentials({
-    required int id,
+    required String id,
   }) async {
     try {
       var response = await DatabaseService.client
@@ -72,7 +69,7 @@ class AuthValidationService {
   }
 
   static Future<bool> isDuplicatedAccount({
-    required int id,
+    required String id,
   }) async {
     var duplicateAccount = false;
     try {
@@ -90,8 +87,8 @@ class AuthValidationService {
   }
 
   static Future register({
-    required int id,
-    required String phoneNumber,
+    required String id,
+    // required String phoneNumber,
   }) async {
     try {
       var response = PostgrestResponse();
@@ -103,8 +100,9 @@ class AuthValidationService {
             .from('wallet')
             .insert(Wallet(
               id: id,
-              phoneNumber: phoneNumber,
+              // phoneNumber: phoneNumber,
               createdAt: DateTime.now(),
+              currency: "MWK",
               updatedAt: DateTime.now(),
               status: 'normal',
               balance: int.parse(Env.newAccountBalance!),

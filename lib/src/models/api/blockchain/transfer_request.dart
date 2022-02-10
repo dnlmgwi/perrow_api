@@ -5,7 +5,7 @@ part 'transfer_request.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class TransferRequest {
-  late int? id;
+  late String? id;
 
   late int? amount;
 

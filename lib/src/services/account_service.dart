@@ -2,7 +2,7 @@ import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
 
 class AccountService {
-  Future<TransAccount> findAccountDetails({required int id}) async {
+  Future<TransAccount> findAccountDetails({required String id}) async {
     PostgrestResponse response;
     try {
       response = await DatabaseService.client
@@ -22,7 +22,7 @@ class AccountService {
       rethrow;
     }
 
-    var result = response.data as List;
+    var result = response.data[0];
 
     if (result.isEmpty) {
       throw AccountNotFoundException();
@@ -60,7 +60,7 @@ class AccountService {
   }
 
   static Future<List<TransactionRecord>> fetchUserTransactions(
-      {required int id, int? paginate}) async {
+      {required String id, int? paginate}) async {
     //Todo Handling
     var jsonTransactions = <TransactionRecord>[];
 

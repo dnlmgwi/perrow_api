@@ -117,7 +117,7 @@ class InvalidAmountException implements Exception {
   late String _message;
 
   InvalidAmountException(
-      [String message = 'Please provide the amount key {amount: value}']) {
+      [String message = 'Please provide the amount key {amount: int}']) {
     _message = message;
   }
 
@@ -132,7 +132,7 @@ class InvalidCurrencyException implements Exception {
   late String _message;
 
   InvalidCurrencyException(
-      [String message = 'Please provide the currency key {currency: value}']) {
+      [String message = 'Please provide the currency key {currency: String}']) {
     _message = message;
   }
 

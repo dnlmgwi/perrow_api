@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:perrow_api/packages/models.dart';
 part 'transaction_record.g.dart';
 
 @JsonSerializable()
@@ -33,13 +32,6 @@ class TransactionRecord extends HiveObject {
   @HiveField(8)
   String currency;
 
-  @HiveField(9)
-  late Wallet? wallets;
-
-  @HiveField(10)
-  @JsonKey(name: 'wallet_id')
-  late int? walletId;
-
   TransactionRecord({
     required this.sender,
     required this.recipient,
@@ -48,8 +40,6 @@ class TransactionRecord extends HiveObject {
     required this.transId,
     required this.transType,
     required this.currency,
-    this.wallets,
-    this.walletId,
     this.blockId,
   });
 

@@ -1,8 +1,8 @@
 import 'package:perrow_api/packages/perrow_api.dart';
 import 'package:perrow_api/src/errors/account_exceptions.dart';
 import 'package:perrow_api/src/models/api/auth/user/login/login_request.dart';
-import 'package:perrow_api/src/services/auth/auth_service.dart';
 import 'package:perrow_api/src/validators/auth_validation.dart';
+import 'package:perrow_api/src/validators/validation/auth_validation_service.dart';
 
 class AuthApi {
   String secret;
@@ -71,7 +71,6 @@ class AuthApi {
           final session = await authService.login(
             payload.password!,
             email: payload.email!,
-            phone: payload.phone!,
           );
 
           return Response.ok(
@@ -152,8 +151,13 @@ class AuthApi {
             phone: payload.phone ?? '',
           );
 
+          await AuthValidationService.register(
+            id: session!.user!.id,
+            // phoneNumber: phoneNumber,
+          );
+
           return Response.ok(
-            json.encode({'data': session!.toJson()}),
+            json.encode({'data': session.toJson()}),
             headers: {
               HttpHeaders.contentTypeHeader: ContentType.json.mimeType,
             },

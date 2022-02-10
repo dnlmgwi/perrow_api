@@ -1,6 +1,5 @@
 import 'package:pedantic/pedantic.dart';
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:perrow_api/src/api/auth_api.dart';
 import 'package:perrow_api/src/api/wallet_api.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/utils.dart';
@@ -69,14 +68,14 @@ void main(List<String> args) async {
     StatusApi().router,
   );
 
-  app.mount(
-    '/v1/auth/',
-    AuthApi(
-      secret: Env.secret!,
-      // tokenService: tokenService,
-      authService: authService,
-    ).router,
-  );
+  // app.mount(
+  //   '/v1/auth/',
+  //   AuthApi(
+  //     secret: Env.secret!,
+  //     // tokenService: tokenService,
+  //     authService: authService,
+  //   ).router,
+  // );
 
   app.mount(
     '/v1/auth/',

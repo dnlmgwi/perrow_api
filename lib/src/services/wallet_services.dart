@@ -1,12 +1,8 @@
 import 'package:perrow_api/packages/perrow_api.dart';
-import 'package:hive/hive.dart';
 import 'package:perrow_api/src/config.dart';
 import 'package:perrow_api/src/errors/account_exceptions.dart';
 
-import 'package:perrow_api/packages/services.dart';
 import 'package:perrow_api/src/validators/enum_values.dart';
-import 'package:postgrest/postgrest.dart';
-import 'package:uuid/uuid.dart';
 
 class WalletService {
   AccountService accountService;
@@ -88,7 +84,7 @@ class WalletService {
   Future<void> depositProcess(TransactionRecord element) async {
     try {
       var foundAccount = await accountService.findAccountDetails(
-        id: int.parse(element.recipient),
+        id: element.recipient,
       );
 
       await editAccountBalance(
@@ -103,13 +99,14 @@ class WalletService {
 
   Future<void> withdrawProcess(TransactionRecord element) async {
     try {
-      var foundAccount = await accountService.findAccountDetails(
-          id: int.parse(element.sender));
+      var foundAccount =
+          await accountService.findAccountDetails(id: element.sender);
 
       await editAccountBalance(
-          senderAccount: foundAccount,
-          value: element.amount,
-          transactionType: element.transType);
+        senderAccount: foundAccount,
+        value: element.amount,
+        transactionType: element.transType,
+      );
       await changeAccountStatusNormal(foundAccount.id!);
     } catch (e) {
       rethrow;
@@ -119,11 +116,11 @@ class WalletService {
   Future<void> transferProcess(TransactionRecord element) async {
     try {
       var recipientAccount = await accountService.findAccountDetails(
-        id: int.parse(element.recipient),
+        id: element.recipient,
       );
 
       var senderAccount = await accountService.findAccountDetails(
-        id: int.parse(element.sender),
+        id: element.sender,
       );
 
       /// Edit User Account Balance
@@ -212,11 +209,12 @@ class WalletService {
           })
           .eq('id', senderAccount.id)
           .execute()
-          .then((_) => DatabaseService.client
+          .then((_) async => await DatabaseService.client
               .from('wallet')
               .update({
                 'balance': recipientAccount.balance + value,
-                'last_transaction': DateTime.now().millisecondsSinceEpoch
+                'last_transaction':
+                    DateTime.now().toString(), //TODO Change to Timestamp
               })
               .eq('id', recipientAccount.id)
               .execute());
@@ -304,18 +302,19 @@ class WalletService {
   int extractMKAmount(RechargeNotification item) =>
       int.parse(item.amount.toString().split('MK').last);
 
-  Future<String> initiateTransfer(
-      {required int senderid,
-      required int recipientid,
-      required int amount,
-      required String currency}) async {
+  Future<String> initiateTransfer({
+    required String senderid,
+    required String recipientid,
+    required int amount,
+    required String currency,
+  }) async {
     var transId = Uuid().v4();
     if (senderid == recipientid) {
       //Prevents User from Sending Points To Self Compounding Account Balance.
       throw SelfTransferException();
     }
     //Check if the sender & recipient are in the system
-    if (await recipientValidation(recipientid.toString())) {
+    if (await recipientValidation(recipientid)) {
       try {
         await checkAccountBalance(
             value: amount,
@@ -333,8 +332,7 @@ class WalletService {
       if (await accountStatusCheck(
         senderid,
       )) {
-        addToPendingTransfer(senderid.toString(), recipientid.toString(),
-            amount, currency, transId);
+        addToPendingTransfer(senderid, recipientid, amount, currency, transId);
 
         await changeAccountStatusToProcessing(
           senderid,
@@ -410,7 +408,7 @@ class WalletService {
   }
 
   Future<bool> accountStatusCheck(
-    int sender,
+    String sender,
   ) async {
     var foundAccount = await accountService.findAccountDetails(
       id: sender,
@@ -426,12 +424,12 @@ class WalletService {
 
     try {
       var recipientAccount = await accountService.findAccountDetails(
-        id: int.parse(recipient),
+        id: recipient,
       );
 
       //TODO: If Recent Transaction was made throw please wait x minutes
 
-      if (recipientAccount.id!.toString().isNotEmpty) {
+      if (recipientAccount.id!.isNotEmpty) {
         //if the Account Server return an account it is a valid account
         accountValid = true;
       } else {
@@ -452,7 +450,7 @@ class WalletService {
   }
 
   Future<void> changeAccountStatusToProcessing(
-    int id,
+    String id,
   ) async {
     //Changes the Users Account Status to processing.
     try {
@@ -460,7 +458,7 @@ class WalletService {
           .from('wallet')
           .update({
             'status': 'processing',
-            'last_transaction': DateTime.now().millisecondsSinceEpoch
+            'last_transaction': DateTime.now().toString()
           })
           .eq('id', id)
           .execute();
@@ -492,13 +490,16 @@ class WalletService {
   }
 
   Future<void> changeAccountStatusNormal(
-    int id,
+    String id,
   ) async {
     //Changes the Users Account Status to normal.
     try {
       await DatabaseService.client
           .from('wallet')
-          .update({'status': 'normal'})
+          .update({
+            'status': 'normal',
+            'last_transaction': DateTime.now().toString(),
+          })
           .eq('id', id)
           .execute()
           .catchError(

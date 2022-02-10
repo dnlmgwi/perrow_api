@@ -5,14 +5,16 @@ part 'wallet.g.dart';
 /// JSON serialization logic to be generated.
 @JsonSerializable(explicitToJson: true)
 class Wallet {
-  int? id;
+  String? id;
 
   String status;
 
   int balance;
 
+  String currency;
+
   @JsonKey(name: 'phone_number')
-  String phoneNumber;
+  late String? phoneNumber;
 
   @JsonKey(name: 'created_at')
   late DateTime? createdAt;
@@ -28,10 +30,11 @@ class Wallet {
 
   Wallet({
     this.id,
-    required this.phoneNumber,
+    this.phoneNumber,
     required this.status,
     required this.balance,
     required this.joinedDate,
+    required this.currency,
     this.createdAt,
     this.updatedAt,
     this.lastTransaction,
